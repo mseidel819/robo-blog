@@ -20,13 +20,13 @@ Before you begin, make sure you have the following:
 
 To start using Next.js, you'll need to install it first. Open your terminal and run the following command:
 
-```lua
+```arduino
 npx create-next-app my-app
 ```
 
 This will create a new Next.js application in a folder named "my-app". Once the installation is complete, you can navigate to the folder and start the development server:
 
-```console
+```arduino
 cd my-app
 npm run dev
 ```

@@ -21,8 +21,10 @@ const handler = async (req, res) => {
     const newMessage = { email, name, message };
 
     let client;
+
+    const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.frabwah.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
     try {
-      client = await MongoClient.connect(process.env.URL);
+      client = await MongoClient.connect(connectionString);
     } catch (err) {
       res.status(500).json({ message: "something went wrong" });
       return;

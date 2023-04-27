@@ -6,7 +6,7 @@ const AllPostsPage = ({ posts }) => {
   return (
     <>
       <Head>
-        <title>Matt&apos;s Blog | Posts</title>
+        <title>&lt;ROBO_BLOGGER&gt;s Blog | Posts</title>
         <meta name="description" content="A list of all programming posts" />
       </Head>
       <AllPosts posts={posts} />
