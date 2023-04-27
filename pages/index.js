@@ -7,7 +7,7 @@ const HomePage = ({ posts }) => {
   return (
     <>
       <Head>
-        <title>Matt&apos;s Blog</title>
+        <title>&lt;ROBO_BLOGGER&gt;s Blog</title>
         <meta name="description" content="A blog about javascript and react" />
       </Head>
       <Hero />

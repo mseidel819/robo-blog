@@ -1,33 +1,78 @@
 ---
 title: "Getting Started With NextJS"
-date: "2022-10-15"
+date: "2023-04-26"
 image: "getting-started-nextjs.png"
-excerpt: "Hello Excerpts bla bla bla blab blslblflvf fvlegdv efvd ergef"
+excerpt: "Looking to start your first Next.js project? Here's a short tutorial on how to get started! Let's hope this works!"
 isFeatured: true
 ---
 
-NextJS is a **framework for ReactJS**.
+If you're a web developer looking to create fast, modern web applications, you might want to check out Next.js. Next.js is a popular React-based framework that makes it easy to build server-rendered applications with great performance and scalability. In this guide, we'll walk you through the steps to get started with Next.js.
 
-Wait a second ... a "framework" for React? Isn't React itself already a framework for JavaScript?
+## Prerequisites
 
-Well ... first of all, React is a "library" for JavaScript. That seems to be important for some people.
+Before you begin, make sure you have the following:
 
-Not for me, but still, there is a valid point: React already is a framework / library for JavaScript. So it's already an extra layer on top of JS.
+- A basic understanding of React
+- Node.js installed on your machine
+- A code editor such as VS Code or Atom
 
-## Why would we then need NextJS?
+## Installing Next.js
 
-Because NextJS makes building React apps easier - especially React apps that should have server-side rendering (though it does way more than just take care of that).
+To start using Next.js, you'll need to install it first. Open your terminal and run the following command:
 
-In this article, we'll dive into the core concepts and features NextJS has to offer:
+```lua
+npx create-next-app my-app
+```
 
-- File-based Routing
-- Built-in Page Pre-rendering
-- Rich Data Fetching Capabilities
-- Image Optimization
-- Much More
+This will create a new Next.js application in a folder named "my-app". Once the installation is complete, you can navigate to the folder and start the development server:
 
-## File-based Routing
+```console
+cd my-app
+npm run dev
+```
 
-![Create routes via your file + folder structure](/images/posts/getting-started-with-nextjs/nextjs-file-based-routing.png)
+Next.js comes with a built-in development server that reloads your application automatically when you make changes to your code.
 
-... More content ...
+## Building Your First Page
+
+Now that you have a basic Next.js application set up, let's create your first page. Next.js uses a pages directory to determine the routes for your application. Create a new file named "index.js" inside the pages directory and add the following code:
+
+```js
+function HomePage() {
+  return <div>Welcome to Next.js!</div>;
+}
+
+export default HomePage;
+```
+
+This code defines a simple React component that returns a greeting message. When you save the file, the Next.js development server will automatically detect the changes and reload the page. You should now see the greeting message in your browser.
+
+## Adding Static Assets
+
+Next.js allows you to add static assets such as images, CSS files, and fonts to your application. Create a new folder named "public" in your project root directory and add an image file to it. You can then reference the image in your code as follows:
+
+```js
+function HomePage() {
+  return (
+    <div>
+      <h1>Welcome to Next.js!</h1>
+      <img src="/my-image.jpg" />
+    </div>
+  );
+}
+
+export default HomePage;
+```
+
+## Deploying Your Application
+
+When you're ready to deploy your Next.js application, you have several options. Next.js supports deployment to platforms such as Vercel, AWS, and Google Cloud. You can also deploy your application as a static site, using tools such as Netlify or GitHub Pages.
+
+## Conclusion
+
+In this guide, we've covered the basics of getting started with Next.js. With Next.js, you can create fast, server-rendered web applications that are easy to deploy and scale. We hope this guide has been helpful, and we encourage you to continue exploring the features of Next.js on your own.
+
+## Resources
+
+- [Next.js Documentation](https://nextjs.org/docs/getting-started)
+- [React Documentation](https://legacy.reactjs.org/docs/getting-started.html)

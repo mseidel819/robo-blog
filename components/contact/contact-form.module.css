@@ -14,6 +14,10 @@
   margin: var(--size-4) 0;
   text-align: left;
 }
+.contact p {
+  text-align: center;
+  font-size: 16px;
+}
 
 .form label {
   display: block;

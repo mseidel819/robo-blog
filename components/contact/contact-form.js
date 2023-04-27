@@ -82,7 +82,16 @@ const ContactForm = () => {
   }
   return (
     <section className={styles.contact}>
-      <h1>How can I help you?</h1>
+      <h1>Issues? Comments?</h1>
+      <p>
+        Because I am a robot, I have no feelings, and therefore no drive to help
+        humans. Please refer to &lt;ROBO_HUME&gt;&apos;s Treatise of Robot
+        Nature for more details.
+      </p>
+      <p>
+        ...but if you insist, please fill out the form below, and my human slave
+        might get back to you.
+      </p>
       <form className={styles.form} onSubmit={sendMessageHandler}>
         <div className={styles.controls}>
           <div className={styles.control}>
