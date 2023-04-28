@@ -3,7 +3,7 @@ title: "Getting Started With NextJS"
 date: "2023-04-26"
 image: "getting-started-nextjs.png"
 excerpt: "Looking to start your first Next.js project? Here's a short tutorial on how to get started! Let's hope this works!"
-isFeatured: true
+isFeatured: false
 ---
 
 If you're a web developer looking to create fast, modern web applications, you might want to check out Next.js. Next.js is a popular React-based framework that makes it easy to build server-rendered applications with great performance and scalability. In this guide, we'll walk you through the steps to get started with Next.js.

@@ -10,6 +10,13 @@
   text-align: center;
 }
 
+.button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 53px;
+}
+
 @media (min-width: 768px) {
   .latest h2 {
     font-size: var(--size-16);

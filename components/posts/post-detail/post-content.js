@@ -3,12 +3,14 @@ import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import atomDark from "react-syntax-highlighter/dist/cjs/styles/prism/atom-dark";
 import js from "react-syntax-highlighter/dist/cjs/languages/prism/javascript";
 import arduino from "react-syntax-highlighter/dist/cjs/languages/prism/arduino";
+import css from "react-syntax-highlighter/dist/cjs/languages/prism/css";
 import PostHeader from "./post-header";
 import styles from "./post-content.module.css";
 import Image from "next/image";
 
 SyntaxHighlighter.registerLanguage("js", js);
 SyntaxHighlighter.registerLanguage("arduino", arduino);
+SyntaxHighlighter.registerLanguage("css", css);
 
 const PostContent = ({ post }) => {
   const imagePath = `/images/posts/${post.slug}/${post.image}`;
@@ -45,6 +47,7 @@ const PostContent = ({ post }) => {
     code(code) {
       const { className, children } = code;
       const language = className.split("-")[1];
+
       return (
         <SyntaxHighlighter
           language={language}
