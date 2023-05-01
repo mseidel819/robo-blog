@@ -1,3 +1,4 @@
+import CommentBox from "@/components/comments/comment-box";
 import PostContent from "@/components/posts/post-detail/post-content";
 import { getPostData, getPostFiles } from "@/lib/posts-util";
 import Head from "next/head";
@@ -10,6 +11,7 @@ const PostDetailPage = ({ post }) => {
         <meta name="description" content={post.excerpt} />
       </Head>
       <PostContent post={post} />
+      <CommentBox slug={post.slug} />
     </>
   );
 };
