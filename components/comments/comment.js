@@ -11,7 +11,7 @@ const Comment = ({ data }) => {
       <div className={styles.author}>
         <div className={styles.userImg}></div>
         <span className={styles.username}>{data.user.username}</span>
-        <date>{formattedDate}</date>
+        <span>{formattedDate}</span>
       </div>
       <p className={styles.content}>{data.content}</p>
       <div className={styles.action_bar}>

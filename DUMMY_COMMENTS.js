@@ -111,3 +111,13 @@ export const DUMMY_COMMENTS = [
     ],
   },
 ];
+
+export const activeUserBot = {
+  username: "userBot",
+  email: "userbot@gmail.com",
+  image: {
+    png: "./images/avatars/image-amyrobson.png",
+    webp: "./images/avatars/image-amyrobson.webp",
+  },
+  userId: "bot1",
+};
