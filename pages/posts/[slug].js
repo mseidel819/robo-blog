@@ -15,7 +15,7 @@ const PostDetailPage = ({ post }) => {
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
       .then((data) => setComments(data.data));
-  }, []);
+  }, [slug]);
 
   const addCommentHandler = (commentData) => {
     fetch(`/api/comments/${slug}`, {
