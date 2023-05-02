@@ -1,11 +1,25 @@
 import styles from "./comment.module.css";
 
-const Comment = ({ data }) => {
+const Comment = ({ data, upvote }) => {
   const formattedDate = new Date(data.createdAt).toLocaleDateString("en-US", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
+
+  const upvoteHandler = () => {
+    const newScore = data.score + 1;
+    const id = data._id;
+
+    upvote(id, newScore);
+  };
+
+  const downvoteHandler = () => {
+    const newScore = data.score - 1;
+    const id = data._id;
+    upvote(id, newScore);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.author}>
@@ -16,9 +30,13 @@ const Comment = ({ data }) => {
       <p className={styles.content}>{data.content}</p>
       <div className={styles.action_bar}>
         <div className={styles.upvoter}>
-          <button className={styles.score_btn}>+</button>
+          <button className={styles.score_btn} onClick={upvoteHandler}>
+            +
+          </button>
           <span>{data.score}</span>
-          <button className={styles.score_btn}>-</button>
+          <button className={styles.score_btn} onClick={downvoteHandler}>
+            -
+          </button>
         </div>
         <div className={styles.add_delete}>
           <button>reply</button>

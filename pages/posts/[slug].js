@@ -4,18 +4,12 @@ import PostContent from "@/components/posts/post-detail/post-content";
 import { getPostData, getPostFiles } from "@/lib/posts-util";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const PostDetailPage = ({ post }) => {
   const router = useRouter();
   const { slug } = router.query;
   const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    fetch(`/api/comments/${slug}`)
-      .then((res) => res.json())
-      .then((data) => setComments(data.data));
-  }, [slug]);
 
   const addCommentHandler = (commentData) => {
     fetch(`/api/comments/${slug}`, {
@@ -34,13 +28,32 @@ const PostDetailPage = ({ post }) => {
         });
       })
       .then((data) => {
-        console.log(data);
+        res.status(201).json({ message: "comment succesfully added!" });
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const scoreChangeHandler = async (id, newScore) => {
+    const response = await fetch(`/api/comments/${slug}`, {
+      method: "PATCH",
+      body: JSON.stringify({ id, newScore }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    console.log("hrhrghrhg", data);
+  };
+
+  useEffect(() => {
+    console.log("hi");
+    fetch(`/api/comments/${slug}`)
+      .then((res) => res.json())
+      .then((data) => setComments(data.data));
+  }, [slug]);
   return (
     <>
       <Head>
@@ -48,7 +61,13 @@ const PostDetailPage = ({ post }) => {
         <meta name="description" content={post.excerpt} />
       </Head>
       <PostContent post={post} />
-      {comments && <CommentBox slug={post.slug} comments={comments} />}
+      {comments && (
+        <CommentBox
+          slug={post.slug}
+          comments={comments}
+          upvote={scoreChangeHandler}
+        />
+      )}
       <CommentForm slug={post.slug} addComment={addCommentHandler} />
     </>
   );
