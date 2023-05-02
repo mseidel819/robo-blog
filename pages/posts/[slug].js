@@ -48,6 +48,19 @@ const PostDetailPage = ({ post }) => {
     console.log("hrhrghrhg", data);
   };
 
+  const addReplyHandler = async (id, reply) => {
+    const response = await fetch(`/api/comments/${slug}`, {
+      method: "PATCH",
+      body: JSON.stringify({ id, reply }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    console.log("add reply here", data);
+  };
+
   useEffect(() => {
     console.log("hi");
     fetch(`/api/comments/${slug}`)
