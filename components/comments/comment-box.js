@@ -7,11 +7,14 @@ const CommentBox = ({ slug, comments, upvote }) => {
     (comment) => comment.articleId === slug
   );
   filteredComments.sort((a, b) => b.score - a.score);
-
   return (
     <div className={styles.content}>
       {filteredComments.map((comment) => (
-        <Comment key={comment._id} data={comment} upvote={upvote} />
+        <Comment
+          key={comment._id ?? comment.createdAt}
+          data={comment}
+          upvote={upvote}
+        />
       ))}
     </div>
   );

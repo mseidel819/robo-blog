@@ -4,7 +4,7 @@ import PostContent from "@/components/posts/post-detail/post-content";
 import { getPostData, getPostFiles } from "@/lib/posts-util";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const PostDetailPage = ({ post }) => {
   const router = useRouter();
@@ -28,7 +28,9 @@ const PostDetailPage = ({ post }) => {
         });
       })
       .then((data) => {
-        res.status(201).json({ message: "comment succesfully added!" });
+        // res.status(201).json({ message: "comment succesfully added!" });
+        setComments([...comments, commentData]);
+        // console.log(comments);
       })
       .catch((err) => {
         console.log(err);
@@ -36,37 +38,37 @@ const PostDetailPage = ({ post }) => {
   };
 
   const scoreChangeHandler = async (id, newScore) => {
-    const response = await fetch(`/api/comments/${slug}`, {
+    fetch(`/api/comments/${slug}`, {
       method: "PATCH",
       body: JSON.stringify({ id, newScore }),
       headers: {
         "Content-Type": "application/json",
       },
-    });
-    const data = await response.json();
-
-    console.log("hrhrghrhg", data);
-  };
-
-  const addReplyHandler = async (id, reply) => {
-    const response = await fetch(`/api/comments/${slug}`, {
-      method: "PATCH",
-      body: JSON.stringify({ id, reply }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-
-    console.log("add reply here", data);
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return res.json().then((data) => {
+          throw new Error(data.message || "something went wrong");
+        });
+      })
+      .then((data) => {
+        console.log(data);
+        const newComments = comments.map((comment) => {
+          return comment._id === id ? { ...comment, score: newScore } : comment;
+        });
+        setComments(newComments);
+      });
   };
 
   useEffect(() => {
-    console.log("hi");
+    // console.log("hi");
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
       .then((data) => setComments(data.data));
   }, [slug]);
+
   return (
     <>
       <Head>

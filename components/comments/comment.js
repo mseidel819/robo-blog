@@ -20,35 +20,6 @@ const Comment = ({ data, upvote }) => {
     upvote(id, newScore);
   };
 
-  // const reply = {
-  //   articleId: "introductions",
-  //   content: " Testtestetetete",
-  //   createdAt: "2022-05-01",
-  //   score: 2,
-  //   user: {
-  //     image: {
-  //       png: "./images/avatars/image-amyrobson.png",
-  //       webp: "./images/avatars/image-amyrobson.webp",
-  //     },
-  //     username: "marp",
-  //     userId: "bot1",
-  //   },
-  //   replies: [],
-  // };
-  // const addReplyHandler = async () => {
-  //   // console.log(data.articleId, data._id);
-  //   const response = await fetch(`/api/comments/${data.articleId}`, {
-  //     method: "PATCH",
-  //     body: JSON.stringify({ id: data._id, reply }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   const data1 = await response.json();
-
-  //   console.log("add reply here", data);
-  // };
-
   return (
     <div className={styles.container}>
       <div className={styles.author}>
@@ -67,9 +38,7 @@ const Comment = ({ data, upvote }) => {
             -
           </button>
         </div>
-        <div className={styles.add_delete}>
-          {/* <button onClick={addReplyHandler}>reply</button> */}
-        </div>
+        <div className={styles.add_delete}></div>
       </div>
       {data.replies.length > 0 &&
         data.replies.map((reply) => (

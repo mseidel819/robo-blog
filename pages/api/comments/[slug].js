@@ -72,6 +72,7 @@ const handler = async (req, res) => {
     const { id, newScore } = req.body;
     console.log(newScore);
     let client;
+
     const objectId = new ObjectId(id);
 
     const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.frabwah.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
