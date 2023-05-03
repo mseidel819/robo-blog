@@ -1,10 +1,18 @@
 import styles from "./comment-form.module.css";
-import { activeUserBot } from "@/DUMMY_COMMENTS";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import { getSession } from "next-auth/react";
 
 const CommentForm = ({ slug, addComment }) => {
   const inputFormContent = useRef();
-  const user = activeUserBot;
+  const [userSession, setUserSession] = useState();
+
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session) {
+        setUserSession(session);
+      }
+    });
+  }, []);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -16,7 +24,10 @@ const CommentForm = ({ slug, addComment }) => {
       content: inputFormContent.current.value,
       createdAt: commentDate,
       score: 0,
-      user: user,
+      user: {
+        username: userSession.user.name,
+        email: userSession.user.email,
+      },
       replies: [],
     };
 
@@ -24,16 +35,24 @@ const CommentForm = ({ slug, addComment }) => {
     inputFormContent.current.value = "";
   };
 
+  if (userSession) {
+    return (
+      <div className={styles.content}>
+        <div className={styles.image}></div>
+        <form className={styles.form} onSubmit={submitHandler}>
+          <textarea
+            className={styles.textarea}
+            rows="5"
+            ref={inputFormContent}></textarea>
+          <button>send</button>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.content}>
-      <div className={styles.image}></div>
-      <form className={styles.form} onSubmit={submitHandler}>
-        <textarea
-          className={styles.textarea}
-          rows="5"
-          ref={inputFormContent}></textarea>
-        <button>send</button>
-      </form>
+      <p>log in to leave a comment</p>
     </div>
   );
 };

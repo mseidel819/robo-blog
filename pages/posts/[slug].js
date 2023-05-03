@@ -30,7 +30,6 @@ const PostDetailPage = ({ post }) => {
       .then((data) => {
         // res.status(201).json({ message: "comment succesfully added!" });
         setComments([...comments, commentData]);
-        // console.log(comments);
       })
       .catch((err) => {
         console.log(err);
@@ -54,7 +53,6 @@ const PostDetailPage = ({ post }) => {
         });
       })
       .then((data) => {
-        console.log(data);
         const newComments = comments.map((comment) => {
           return comment._id === id ? { ...comment, score: newScore } : comment;
         });
@@ -63,7 +61,6 @@ const PostDetailPage = ({ post }) => {
   };
 
   useEffect(() => {
-    // console.log("hi");
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
       .then((data) => setComments(data.data));
@@ -83,6 +80,7 @@ const PostDetailPage = ({ post }) => {
           upvote={scoreChangeHandler}
         />
       )}
+
       <CommentForm slug={post.slug} addComment={addCommentHandler} />
     </>
   );

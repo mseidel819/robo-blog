@@ -69,6 +69,13 @@
   border-color: var(--color-primary-500);
 }
 
+.login {
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: not-allowed;
+}
+
 @media (min-width: 768px) {
   .contact h1 {
     font-size: var(--size-16);
