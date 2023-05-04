@@ -11,6 +11,12 @@ const PostDetailPage = ({ post }) => {
   const { slug } = router.query;
   const [comments, setComments] = useState([]);
 
+  const fetchComments = () => {
+    fetch(`/api/comments/${slug}`)
+      .then((res) => res.json())
+      .then((data) => setComments(data.data));
+  };
+
   const addCommentHandler = (commentData) => {
     fetch(`/api/comments/${slug}`, {
       method: "POST",
@@ -30,13 +36,20 @@ const PostDetailPage = ({ post }) => {
       .then((data) => {
         // res.status(201).json({ message: "comment succesfully added!" });
         setComments([...comments, commentData]);
+        fetchComments();
       })
       .catch((err) => {
-        res.status(401).json({ message: "Could not add comment" });
+        // res.status(401).json({ message: "Could not add comment" });
       });
   };
 
   const scoreChangeHandler = (id, newScore) => {
+    const prevComments = [...comments];
+    const newComments = comments.map((comment) => {
+      return comment._id === id ? { ...comment, score: newScore } : comment;
+    });
+    setComments(newComments);
+
     fetch(`/api/comments/${slug}`, {
       method: "PATCH",
       body: JSON.stringify({ id, newScore }),
@@ -53,10 +66,10 @@ const PostDetailPage = ({ post }) => {
         });
       })
       .then((data) => {
-        const newComments = comments.map((comment) => {
-          return comment._id === id ? { ...comment, score: newScore } : comment;
-        });
-        setComments(newComments);
+        fetchComments();
+      })
+      .catch((err) => {
+        setComments(prevComments);
       });
   };
 
@@ -81,13 +94,15 @@ const PostDetailPage = ({ post }) => {
           return comment._id !== id;
         });
         setComments(newComments);
+        fetchComments();
       });
   };
 
   useEffect(() => {
-    fetch(`/api/comments/${slug}`)
-      .then((res) => res.json())
-      .then((data) => setComments(data.data));
+    // fetch(`/api/comments/${slug}`)
+    //   .then((res) => res.json())
+    //   .then((data) => setComments(data.data));
+    fetchComments();
   }, [slug]);
 
   return (
