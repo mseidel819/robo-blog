@@ -4,13 +4,20 @@
   padding: 8px 16px;
   border-radius: 4px;
 }
-
+.topBar {
+  display: flex;
+  justify-content: space-between;
+}
 .author {
   display: flex;
-  gap: 8px;
+  gap: 16px;
   align-items: center;
+  /* font-weight: 700; */
 }
-
+.date {
+  font-size: 16px;
+  opacity: 0.5;
+}
 .userImg {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 100px;
@@ -18,10 +25,18 @@
   width: 36px;
   overflow: hidden;
 }
-
+.you {
+  background-color: var(--color-primary-500);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: normal;
+  padding: 2px 6px;
+}
 .username {
-  margin-right: 24px;
-  font-weight: bold;
+  /* margin-right: 24px; */
+  font-weight: 700;
+  font-family: "Oswald";
 }
 
 .action_bar {
@@ -35,12 +50,17 @@
   height: 36px;
   width: 100px;
   border-radius: 8px;
-  background-color: aquamarine;
+  background-color: var(--color-primary-100);
   overflow: hidden;
+}
+
+.upvoter span {
+  margin: auto;
 }
 .score_btn {
   border: none;
   background-color: transparent;
+  width: 32px;
 }
 .score_btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
@@ -49,4 +69,22 @@
 .reply_container {
   border-left: 1px solid black;
   margin: 12px 24px;
+}
+
+.delete {
+  border: none;
+  background-color: transparent;
+  color: var(--color-error-500);
+  font-weight: 700;
+
+  font-size: 16px;
+}
+
+.delete:hover {
+  color: var(--color-error-100);
+}
+
+.container p {
+  /* background-color: blue; */
+  margin-left: 60px;
 }

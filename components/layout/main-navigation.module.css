@@ -27,8 +27,17 @@
 
 .header a:hover,
 .header a:active,
-.header a.active {
+.header a.active,
+.logout:hover,
+.logout:active {
   color: var(--color-grey-200);
+}
+
+.logout {
+  border: none;
+  background-color: transparent;
+  color: var(--color-grey-100);
+  font-size: 20px;
 }
 
 @media (min-width: 768px) {

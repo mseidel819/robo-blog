@@ -37,7 +37,9 @@ const MainNavigation = () => {
 
             {session && (
               <li>
-                <button onClick={logoutHandler}>Logout</button>
+                <button className={styles.logout} onClick={logoutHandler}>
+                  Logout
+                </button>
               </li>
             )}
           </ul>

@@ -27,19 +27,26 @@ const Comment = ({ data, upvote, deleteCommentHandler, user }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.author}>
-        <div className={styles.userImg}>
-          <Image
-            src={`https://robohash.org/${data.user.username}?size=106x106`}
-            height={36}
-            width={36}
-            alt={data.user.username}
-          />
+      <div className={styles.topBar}>
+        <div className={styles.author}>
+          <div className={styles.userImg}>
+            <Image
+              src={`https://robohash.org/${data.user.username}?size=106x106`}
+              height={36}
+              width={36}
+              alt={data.user.username}
+            />
+          </div>
+          <span className={styles.username}>{data.user.username}</span>
+          {user && user.email === data.user.email && (
+            <span className={styles.you}>you</span>
+          )}
+          <span className={styles.date}>{formattedDate}</span>
         </div>
-        <span className={styles.username}>{data.user.username}</span>
-        <span>{formattedDate}</span>
         {user && user.email === data.user.email && (
-          <button onClick={deleteHandler}>delete</button>
+          <button className={styles.delete} onClick={deleteHandler}>
+            Delete
+          </button>
         )}
       </div>
       <p className={styles.content}>{data.content}</p>

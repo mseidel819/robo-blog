@@ -51,9 +51,10 @@ const CommentForm = ({ slug, addComment }) => {
         <form className={styles.form} onSubmit={submitHandler}>
           <textarea
             className={styles.textarea}
-            rows="5"
+            rows="3"
+            placeholder="add a comment..."
             ref={inputFormContent}></textarea>
-          <button>send</button>
+          <button className={styles.button}>Send</button>
         </form>
       </div>
     );
