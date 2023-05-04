@@ -32,11 +32,11 @@ const PostDetailPage = ({ post }) => {
         setComments([...comments, commentData]);
       })
       .catch((err) => {
-        console.log(err);
+        res.status(401).json({ message: "Could not add comment" });
       });
   };
 
-  const scoreChangeHandler = async (id, newScore) => {
+  const scoreChangeHandler = (id, newScore) => {
     fetch(`/api/comments/${slug}`, {
       method: "PATCH",
       body: JSON.stringify({ id, newScore }),
@@ -60,6 +60,30 @@ const PostDetailPage = ({ post }) => {
       });
   };
 
+  const deleteCommentHandler = (id) => {
+    fetch(`/api/comments/id/${id}`, {
+      method: "DELETE",
+      body: JSON.stringify({ id, hello: "hi" }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return res.json().then((data) => {
+          throw new Error(data.message || "something went wrong");
+        });
+      })
+      .then((data) => {
+        const newComments = comments.filter((comment) => {
+          return comment._id !== id;
+        });
+        setComments(newComments);
+      });
+  };
+
   useEffect(() => {
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
@@ -78,6 +102,7 @@ const PostDetailPage = ({ post }) => {
           slug={post.slug}
           comments={comments}
           upvote={scoreChangeHandler}
+          deleteCommentHandler={deleteCommentHandler}
         />
       )}
 

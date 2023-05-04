@@ -1,11 +1,11 @@
 import styles from "./comment-form.module.css";
 import { useRef, useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
+import Image from "next/image";
 
 const CommentForm = ({ slug, addComment }) => {
   const inputFormContent = useRef();
   const [userSession, setUserSession] = useState();
-
   useEffect(() => {
     getSession().then((session) => {
       if (session) {
@@ -38,7 +38,16 @@ const CommentForm = ({ slug, addComment }) => {
   if (userSession) {
     return (
       <div className={styles.content}>
-        <div className={styles.image}></div>
+        <div className={styles.image}>
+          {userSession && (
+            <Image
+              src={`https://robohash.org/${userSession.user.name}?size=106x106`}
+              height={36}
+              width={36}
+              alt={userSession.user.name}
+            />
+          )}
+        </div>
         <form className={styles.form} onSubmit={submitHandler}>
           <textarea
             className={styles.textarea}

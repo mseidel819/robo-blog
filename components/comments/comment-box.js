@@ -1,8 +1,14 @@
 import Comment from "./comment";
 import styles from "./comment-box.module.css";
-import { DUMMY_COMMENTS } from "@/DUMMY_COMMENTS";
+import { useEffect, useState } from "react";
+import { getSession } from "next-auth/react";
+const CommentBox = ({ slug, comments, upvote, deleteCommentHandler }) => {
+  const [user, setUser] = useState("");
 
-const CommentBox = ({ slug, comments, upvote }) => {
+  useEffect(() => {
+    getSession().then((session) => setUser(session?.user));
+  }, []);
+
   const filteredComments = comments.filter(
     (comment) => comment.articleId === slug
   );
@@ -14,6 +20,8 @@ const CommentBox = ({ slug, comments, upvote }) => {
           key={comment._id ?? comment.createdAt}
           data={comment}
           upvote={upvote}
+          deleteCommentHandler={deleteCommentHandler}
+          user={user}
         />
       ))}
     </div>

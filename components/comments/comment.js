@@ -1,12 +1,11 @@
 import styles from "./comment.module.css";
 import Image from "next/image";
-const Comment = ({ data, upvote }) => {
+const Comment = ({ data, upvote, deleteCommentHandler, user }) => {
   const formattedDate = new Date(data.createdAt).toLocaleDateString("en-US", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
-
   const upvoteHandler = () => {
     const newScore = data.score + 1;
     const id = data._id;
@@ -18,6 +17,12 @@ const Comment = ({ data, upvote }) => {
     const newScore = data.score - 1;
     const id = data._id;
     upvote(id, newScore);
+  };
+
+  const deleteHandler = () => {
+    const id = data._id;
+
+    deleteCommentHandler(id);
   };
 
   return (
@@ -33,6 +38,9 @@ const Comment = ({ data, upvote }) => {
         </div>
         <span className={styles.username}>{data.user.username}</span>
         <span>{formattedDate}</span>
+        {user && user.email === data.user.email && (
+          <button onClick={deleteHandler}>delete</button>
+        )}
       </div>
       <p className={styles.content}>{data.content}</p>
       <div className={styles.action_bar}>
