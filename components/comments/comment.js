@@ -50,18 +50,29 @@ const Comment = ({ data, upvote, deleteCommentHandler, user }) => {
         )}
       </div>
       <p className={styles.content}>{data.content}</p>
-      <div className={styles.action_bar}>
-        <div className={styles.upvoter}>
-          <button className={styles.score_btn} onClick={upvoteHandler}>
-            +
-          </button>
-          <span>{data.score}</span>
-          <button className={styles.score_btn} onClick={downvoteHandler}>
-            -
-          </button>
+      {user && user.email === data.user.email && (
+        <div className={styles.action_bar}>
+          <div className={styles.upvoter}>
+            <span>{data.score}</span>
+          </div>
         </div>
-        <div className={styles.add_delete}></div>
-      </div>
+      )}
+
+      {user && user.email !== data.user.email && (
+        <div className={styles.action_bar}>
+          <div className={styles.upvoter}>
+            <button className={styles.score_btn} onClick={upvoteHandler}>
+              +
+            </button>
+            <span>{data.score}</span>
+            <button className={styles.score_btn} onClick={downvoteHandler}>
+              -
+            </button>
+          </div>
+          <div className={styles.add_delete}></div>
+        </div>
+      )}
+
       {data.replies.length > 0 &&
         data.replies.map((reply) => (
           <div key={reply._id} className={styles.reply_container}>
