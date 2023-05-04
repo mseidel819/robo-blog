@@ -1,5 +1,5 @@
 .content {
-  width: 95%;
+  /* width: 95%; */
   max-width: 60rem;
   margin: var(--size-8) auto;
   font-size: var(--size-5);
@@ -8,15 +8,15 @@
   border-radius: 6px;
   padding: var(--size-4);
   display: flex;
-  gap: 24px;
+  gap: 14px;
   justify-content: space-between;
 }
 
 .image {
   background-color: white;
-  border-radius: 100px;
-  height: 36px;
-  width: 36px;
+  border-radius: 1000px;
+  height: 66px;
+  width: 71px;
   overflow: hidden;
 }
 .form {
