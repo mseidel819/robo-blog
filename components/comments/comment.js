@@ -1,5 +1,5 @@
 import styles from "./comment.module.css";
-
+import Image from "next/image";
 const Comment = ({ data, upvote }) => {
   const formattedDate = new Date(data.createdAt).toLocaleDateString("en-US", {
     day: "numeric",
@@ -23,7 +23,14 @@ const Comment = ({ data, upvote }) => {
   return (
     <div className={styles.container}>
       <div className={styles.author}>
-        <div className={styles.userImg}></div>
+        <div className={styles.userImg}>
+          <Image
+            src={`https://robohash.org/${data.user.username}?size=106x106`}
+            height={36}
+            width={36}
+            alt={data.user.username}
+          />
+        </div>
         <span className={styles.username}>{data.user.username}</span>
         <span>{formattedDate}</span>
       </div>

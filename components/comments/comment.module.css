@@ -12,10 +12,11 @@
 }
 
 .userImg {
-  background-color: blueviolet;
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 100px;
   height: 36px;
   width: 36px;
+  overflow: hidden;
 }
 
 .username {

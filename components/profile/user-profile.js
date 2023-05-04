@@ -2,6 +2,7 @@ import { getSession } from "next-auth/react";
 import ProfileForm from "./profile-form";
 import styles from "./user-profile.module.css";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 function UserProfile() {
   const [user, setUser] = useState("");
@@ -20,13 +21,24 @@ function UserProfile() {
   };
 
   useEffect(() => {
-    getSession().then((session) => setUser(session.user.name));
+    getSession().then((session) => setUser(session.user));
   }, []);
 
   if (user) {
     return (
       <section className={styles.profile}>
-        <h1>{user}&apos;s profile</h1>
+        <div className={styles.profileImg}>
+          {user.name && (
+            <Image
+              priority
+              src={`https://robohash.org/${user.name}?size=236x236`}
+              height={236}
+              width={236}
+              alt={user.name}
+            />
+          )}
+        </div>
+        <h1>{user.name}&apos;s profile</h1>
         <ProfileForm onChangePassword={changePasswordHandler} />
       </section>
     );
