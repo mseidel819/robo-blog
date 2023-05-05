@@ -34,7 +34,7 @@ const CommentForm = ({ slug, addComment }) => {
         <div className={styles.image}>
           {userSession && (
             <Image
-              src={`https://robohash.org/${userSession.user.name}?size=106x106`}
+              src={`https://robohash.org/${userSession.user.email}?size=106x106`}
               height={66}
               width={66}
               alt={userSession.user.name}

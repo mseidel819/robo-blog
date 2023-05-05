@@ -1,7 +1,6 @@
 import { useSession } from "next-auth/react";
 import ProfileForm from "./profile-form";
 import styles from "./user-profile.module.css";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 
 function UserProfile() {
@@ -25,7 +24,7 @@ function UserProfile() {
           {session.user.name && (
             <Image
               priority
-              src={`https://robohash.org/${session.user.name}?size=236x236`}
+              src={`https://robohash.org/${session.user.email}?size=236x236`}
               height={236}
               width={236}
               alt={session.user.name}
