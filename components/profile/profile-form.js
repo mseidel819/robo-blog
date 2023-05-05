@@ -1,10 +1,13 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import classes from "./profile-form.module.css";
+import { useSession } from "next-auth/react";
 
 function ProfileForm({ onChangePassword, onChangeUsername }) {
   const newPasswordInput = useRef();
   const oldPasswordInput = useRef();
   const newUsernameInput = useRef();
+
+  const { data: session, update } = useSession();
 
   const passwordSubmitHandler = (e) => {
     e.preventDefault();

@@ -6,7 +6,7 @@ import Notification from "../ui/notification";
 import { useState, useEffect, useRef } from "react";
 
 function UserProfile() {
-  const { data: session, status } = useSession();
+  const { data: session, update } = useSession();
 
   const [requestStatus, setRequestStatus] = useState();
   const [requestError, setRequestError] = useState();
@@ -36,6 +36,7 @@ function UserProfile() {
         throw new Error(data.message);
       }
       setRequestStatus("success");
+      session.user.name = newUsername;
     } catch (err) {
       setRequestStatus("error");
       setRequestError(err.message);
