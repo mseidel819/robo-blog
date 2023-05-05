@@ -10,6 +10,7 @@ const PostDetailPage = ({ post }) => {
   const router = useRouter();
   const { slug } = router.query;
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchComments = () => {
     fetch(`/api/comments/${slug}`)
@@ -18,6 +19,7 @@ const PostDetailPage = ({ post }) => {
   };
 
   const addCommentHandler = (commentData) => {
+    setLoading(true);
     fetch(`/api/comments/${slug}`, {
       method: "POST",
       body: JSON.stringify(commentData),
@@ -37,9 +39,11 @@ const PostDetailPage = ({ post }) => {
         // res.status(201).json({ message: "comment succesfully added!" });
         setComments([...comments, commentData]);
         fetchComments();
+        setLoading(false);
       })
       .catch((err) => {
         // res.status(401).json({ message: "Could not add comment" });
+        setLoading(false);
       });
   };
 
@@ -121,7 +125,11 @@ const PostDetailPage = ({ post }) => {
         />
       )}
 
-      <CommentForm slug={post.slug} addComment={addCommentHandler} />
+      <CommentForm
+        loading={loading}
+        slug={post.slug}
+        addComment={addCommentHandler}
+      />
     </>
   );
 };

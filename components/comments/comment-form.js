@@ -1,15 +1,15 @@
 import styles from "./comment-form.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Loader from "../ui/loader/loader";
 
-const CommentForm = ({ slug, addComment }) => {
+const CommentForm = ({ slug, addComment, loading }) => {
   const inputFormContent = useRef();
   const { data: userSession, status } = useSession();
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     const commentDate = new Date();
 
     const comment = {
@@ -34,7 +34,7 @@ const CommentForm = ({ slug, addComment }) => {
         <div className={styles.image}>
           {userSession && (
             <Image
-              src={`https://robohash.org/${userSession.user.name}?size=106x106`}
+              src={`https://robohash.org/${userSession.user.email}?size=106x106`}
               height={66}
               width={66}
               alt={userSession.user.name}
@@ -47,7 +47,11 @@ const CommentForm = ({ slug, addComment }) => {
             rows="3"
             placeholder="add a comment..."
             ref={inputFormContent}></textarea>
-          <button className={styles.button}>Send</button>
+          <button className={styles.button}>
+            {loading ? <Loader /> : "Send"}
+            {/* <Loader /> */}
+            {/* Send */}
+          </button>
         </form>
       </div>
     );

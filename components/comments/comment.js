@@ -35,7 +35,7 @@ const Comment = ({ data, upvote, deleteCommentHandler }) => {
         <div className={styles.author}>
           <div className={styles.userImg}>
             <Image
-              src={`https://robohash.org/${data.user.username}?size=106x106`}
+              src={`https://robohash.org/${data.user.email}?size=106x106`}
               height={36}
               width={36}
               alt={data.user.username}

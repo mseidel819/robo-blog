@@ -1,7 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import classes from "./auth-form.module.css";
 import { useRouter } from "next/router";
+import Notification from "../ui/notification";
 
 const createUser = async (email, password, username) => {
   const response = await fetch("/api/auth/signup", {
@@ -25,8 +26,25 @@ function AuthForm() {
   const passwordInputRef = useRef();
   const usernameInpufRef = useRef();
   const [isLogin, setIsLogin] = useState(true);
-
+  const [requestStatus, setRequestStatus] = useState();
+  const [requestError, setRequestError] = useState();
+  //processing, success, error
   const router = useRouter();
+
+  useEffect(() => {
+    if (
+      requestStatus === "success" ||
+      requestStatus === "error" ||
+      requestStatus === "login error"
+    ) {
+      const timer = setTimeout(() => {
+        setRequestStatus(null);
+        setRequestError(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [requestStatus]);
 
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState);
@@ -34,12 +52,14 @@ function AuthForm() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setRequestStatus("pending");
 
     const enteredEmail = emailInpufRef.current.value;
     const enteredPasword = passwordInputRef.current.value;
 
     try {
       if (!isLogin) {
+        setRequestStatus("signup");
         const enteredUsername = usernameInpufRef.current.value;
 
         const result = await createUser(
@@ -48,6 +68,7 @@ function AuthForm() {
           enteredUsername
         );
       }
+      setRequestStatus("signin");
 
       const result2 = await signIn("credentials", {
         redirect: false,
@@ -55,12 +76,65 @@ function AuthForm() {
         password: enteredPasword,
       });
       if (!result2.error) {
+        setRequestStatus("success");
+
         router.replace("/profile");
+      } else {
+        setRequestStatus("login error");
       }
     } catch (err) {
-      console.log(err);
+      setRequestError(err.message);
+
+      setRequestStatus("error");
+
+      console.log("oopx", err);
     }
   };
+
+  let notification;
+
+  if (requestStatus === "pending") {
+    notification = {
+      status: "pending",
+      title: "processing...",
+      message: "your message is on its way",
+    };
+  }
+  if (requestStatus === "signup") {
+    notification = {
+      status: "pending",
+      title: "Signing up...",
+      message: "Your profile is being created",
+    };
+  }
+  if (requestStatus === "signin") {
+    notification = {
+      status: "pending",
+      title: "Signing in...",
+      message: "Signing into your account",
+    };
+  }
+  if (requestStatus === "success") {
+    notification = {
+      status: "success",
+      title: "Success",
+      message: "Sign in Succesful!",
+    };
+  }
+  if (requestStatus === "error") {
+    notification = {
+      status: "error",
+      title: "Error",
+      message: requestError,
+    };
+  }
+  if (requestStatus === "login error") {
+    notification = {
+      status: "error",
+      title: "Error",
+      message: "Incorrect email or password",
+    };
+  }
 
   return (
     <section className={classes.auth}>
@@ -95,6 +169,13 @@ function AuthForm() {
           </button>
         </div>
       </form>
+      {notification && (
+        <Notification
+          status={notification.status}
+          title={notification.title}
+          message={notification.message}
+        />
+      )}
     </section>
   );
 }

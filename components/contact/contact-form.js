@@ -22,8 +22,6 @@ const sendContactData = async (contactDetails) => {
 const ContactForm = () => {
   const { data: userSession, status } = useSession();
 
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredName, setEnteredName] = useState("");
   const [enteredMessage, setEnteredMessage] = useState("");
   const [requestStatus, setRequestStatus] = useState();
   const [requestError, setRequestError] = useState();
@@ -46,14 +44,14 @@ const ContactForm = () => {
 
     try {
       await sendContactData({
-        email: enteredEmail,
-        name: enteredName,
+        email: userSession.user.email,
+        name: userSession.user.name,
         message: enteredMessage,
       });
       setRequestStatus("success");
-      setEnteredEmail("");
+      // setEnteredEmail("");
       setEnteredMessage("");
-      setEnteredName("");
+      // setEnteredName("");
     } catch (err) {
       setRequestStatus("error");
       setRequestError(err.message);
@@ -97,7 +95,7 @@ const ContactForm = () => {
       </p>
       {userSession && (
         <form className={styles.form} onSubmit={sendMessageHandler}>
-          <div className={styles.controls}>
+          {/* <div className={styles.controls}>
             <div className={styles.control}>
               <label htmlFor="email">Your Email</label>
               <input
@@ -118,7 +116,7 @@ const ContactForm = () => {
                 onChange={(event) => setEnteredName(event.target.value)}
               />
             </div>
-          </div>
+          </div> */}
           <div className={styles.control}>
             <label htmlFor="message">Your Message</label>
             <textarea
@@ -130,6 +128,7 @@ const ContactForm = () => {
                 setEnteredMessage(event.target.value)
               }></textarea>
           </div>
+
           <div className={styles.actions}>
             <button>Send Message</button>
           </div>
