@@ -1,15 +1,31 @@
 import styles from "./comment.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+
 const Comment = ({ data, upvote, deleteCommentHandler }) => {
   const { data: session, status } = useSession();
   // const { user } = session;
 
-  const formattedDate = new Date(data.createdAt).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const [formattedDate, setDate] = useState();
+
+  useEffect(() => {
+    const formattedDate1 = new Date(data.createdAt).toLocaleDateString(
+      "en-US",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }
+    );
+    setDate(formattedDate1);
+  }, [data.createdAt]);
+
+  // const formattedDate = new Date(data.createdAt).toLocaleDateString("en-US", {
+  //   day: "numeric",
+  //   month: "long",
+  //   year: "numeric",
+  // });
   const upvoteHandler = () => {
     const newScore = data.score + 1;
     const id = data._id;

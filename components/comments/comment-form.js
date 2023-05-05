@@ -1,5 +1,5 @@
 import styles from "./comment-form.module.css";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Loader from "../ui/loader/loader";
@@ -7,10 +7,15 @@ import Loader from "../ui/loader/loader";
 const CommentForm = ({ slug, addComment, loading }) => {
   const inputFormContent = useRef();
   const { data: userSession, status } = useSession();
+  const [commentDate, setDate] = useState();
+
+  useEffect(() => {
+    setDate(new Date());
+  }, []);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const commentDate = new Date();
+    // const commentDate = new Date();
 
     const comment = {
       articleId: slug,

@@ -1,15 +1,26 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./post-item.module.css";
+import { useState, useEffect } from "react";
 
 const PostItem = ({ post }) => {
   const { title, image, excerpt, date, slug } = post;
+  const [formattedDate, setDate] = useState();
 
-  const formattedDate = new Date(date).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  useEffect(() => {
+    const formattedDate1 = new Date(date).toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    setDate(formattedDate1);
+  }, [date]);
+
+  // const formattedDate = new Date(date).toLocaleDateString("en-US", {
+  //   day: "numeric",
+  //   month: "long",
+  //   year: "numeric",
+  // });
 
   const imagePath = `/images/posts/${slug}/${image}`;
   const linkPath = `/posts/${slug}`;
