@@ -1,4 +1,3 @@
-import { hashPassword, verifyPassword } from "@/lib/auth";
 import { connectToDb } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
@@ -7,6 +6,8 @@ const handler = async (req, res) => {
   if (req.method !== "PATCH") {
     return;
   }
+  const { newUsername } = req.body;
+  console.log(req.body);
 
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
@@ -15,8 +16,6 @@ const handler = async (req, res) => {
     });
   }
   const userEmail = session.user.email;
-  const oldPassword = req.body.oldPassword;
-  const newPasword = req.body.newPassword;
 
   const client = await connectToDb();
   const usersCollection = await client.db().collection("users");
@@ -28,24 +27,13 @@ const handler = async (req, res) => {
     return;
   }
 
-  const currentPassword = user.password;
-
-  const passwordsAreEqual = await verifyPassword(oldPassword, currentPassword);
-  if (!passwordsAreEqual) {
-    res.status(422).json({ status: "error", message: "passwords don't match" });
-    client.close();
-    return;
-  }
-
-  const hashedPassword = await hashPassword(newPasword);
-
   const result = await usersCollection.updateOne(
     { email: userEmail },
-    { $set: { password: hashedPassword } }
+    { $set: { username: newUsername } }
   );
   client.close();
 
-  res.status(200).json({ message: "password updated" });
+  res.status(200).json({ message: "Username updated" });
 };
 
 export default handler;
