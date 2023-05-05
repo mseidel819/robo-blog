@@ -6,7 +6,8 @@ import { useSession, signOut } from "next-auth/react";
 
 const Hamburger = () => {
   const [active, setActive] = useState(false);
-
+  const checkBoxStatus = useRef();
+  // console.log(checkBoxStatus.current.checked);
   const { data: session, status } = useSession();
 
   const bar1 = `${styles.bars} ${styles.bar1}`;
@@ -15,6 +16,8 @@ const Hamburger = () => {
 
   const activeHandler = () => {
     setActive(!active);
+
+    if (active) checkBoxStatus.current.checked = false;
   };
 
   const logoutHandler = () => {
@@ -31,6 +34,7 @@ const Hamburger = () => {
           className={styles.checkbox}
           id="checkbox"
           onChange={activeHandler}
+          ref={checkBoxStatus}
         />
         <label htmlFor="checkbox" id="toggle" className={styles.toggle}>
           <div className={bar1} id="bar1"></div>
@@ -42,7 +46,7 @@ const Hamburger = () => {
             <div onClick={(e) => e.stopPropagation()} className={styles.module}>
               <nav>
                 <ul>
-                  <li>
+                  <li className={styles.link}>
                     <Link onClick={activeHandler} href="/posts">
                       Posts
                     </Link>

@@ -96,6 +96,9 @@
   color: black;
   opacity: 1;
 }
+.link {
+  color: black;
+}
 
 .logout {
   border: none;
