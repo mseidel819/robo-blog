@@ -1,18 +1,11 @@
 import styles from "./comment-form.module.css";
-import { useRef, useState, useEffect } from "react";
-import { getSession } from "next-auth/react";
+import { useRef } from "react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 const CommentForm = ({ slug, addComment }) => {
   const inputFormContent = useRef();
-  const [userSession, setUserSession] = useState();
-  useEffect(() => {
-    getSession().then((session) => {
-      if (session) {
-        setUserSession(session);
-      }
-    });
-  }, []);
+  const { data: userSession, status } = useSession();
 
   const submitHandler = (e) => {
     e.preventDefault();

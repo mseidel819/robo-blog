@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./contact-form.module.css";
 import Notification from "../ui/notification";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const sendContactData = async (contactDetails) => {
   const response = await fetch("/api/contact", {
@@ -20,21 +20,13 @@ const sendContactData = async (contactDetails) => {
 };
 
 const ContactForm = () => {
+  const { data: userSession, status } = useSession();
+
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredName, setEnteredName] = useState("");
   const [enteredMessage, setEnteredMessage] = useState("");
   const [requestStatus, setRequestStatus] = useState();
   const [requestError, setRequestError] = useState();
-  const [userSession, setUserSession] = useState();
-
-  useEffect(() => {
-    getSession().then((session) => {
-      // console.log(session, signedIn);
-      if (session) {
-        setUserSession(session);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     if (requestStatus === "success" || requestStatus === "error") {

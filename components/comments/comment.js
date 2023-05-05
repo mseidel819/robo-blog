@@ -1,6 +1,10 @@
 import styles from "./comment.module.css";
 import Image from "next/image";
-const Comment = ({ data, upvote, deleteCommentHandler, user }) => {
+import { useSession } from "next-auth/react";
+const Comment = ({ data, upvote, deleteCommentHandler }) => {
+  const { data: session, status } = useSession();
+  // const { user } = session;
+
   const formattedDate = new Date(data.createdAt).toLocaleDateString("en-US", {
     day: "numeric",
     month: "long",
@@ -38,19 +42,19 @@ const Comment = ({ data, upvote, deleteCommentHandler, user }) => {
             />
           </div>
           <span className={styles.username}>{data.user.username}</span>
-          {user && user.email === data.user.email && (
+          {session && session.user.email === data.user.email && (
             <span className={styles.you}>you</span>
           )}
           <span className={styles.date}>{formattedDate}</span>
         </div>
-        {user && user.email === data.user.email && (
+        {session && session.user.email === data.user.email && (
           <button className={styles.delete} onClick={deleteHandler}>
             Delete
           </button>
         )}
       </div>
       <p className={styles.content}>{data.content}</p>
-      {user && user.email === data.user.email && (
+      {(!session || (session && session.user.email === data.user.email)) && (
         <div className={styles.action_bar}>
           <div className={styles.upvoter}>
             <span>{data.score}</span>
@@ -58,7 +62,7 @@ const Comment = ({ data, upvote, deleteCommentHandler, user }) => {
         </div>
       )}
 
-      {user && user.email !== data.user.email && (
+      {session && session.user.email !== data.user.email && (
         <div className={styles.action_bar}>
           <div className={styles.upvoter}>
             <button className={styles.score_btn} onClick={upvoteHandler}>

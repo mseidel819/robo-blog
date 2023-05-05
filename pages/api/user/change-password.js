@@ -1,6 +1,5 @@
 import { hashPassword, verifyPassword } from "@/lib/auth";
 import { connectToDb } from "@/lib/db";
-// import { getSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 
@@ -9,7 +8,6 @@ const handler = async (req, res) => {
     return;
   }
 
-  // const session = await getSession({ req });
   const session = await getServerSession(req, res, authOptions);
   console.log(session);
   if (!session) {

@@ -15,7 +15,6 @@ const MainNavigation = () => {
     window.addEventListener("resize", resizeHandler);
   }, []);
 
-  console.log(width);
   const logoutHandler = () => {
     signOut();
   };

@@ -16,7 +16,6 @@ const Hamburger = () => {
   const activeHandler = () => {
     setActive(!active);
   };
-  console.log(active);
 
   const logoutHandler = () => {
     signOut();
