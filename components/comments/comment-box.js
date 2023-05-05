@@ -5,18 +5,20 @@ const CommentBox = ({ slug, comments, upvote, deleteCommentHandler }) => {
     (comment) => comment.articleId === slug
   );
   filteredComments.sort((a, b) => b.score - a.score);
-  return (
-    <div className={styles.content}>
-      {filteredComments.map((comment) => (
-        <Comment
-          key={comment._id ?? comment.createdAt}
-          data={comment}
-          upvote={upvote}
-          deleteCommentHandler={deleteCommentHandler}
-        />
-      ))}
-    </div>
-  );
+  if (filteredComments.length) {
+    return (
+      <div className={styles.content}>
+        {filteredComments.map((comment) => (
+          <Comment
+            key={comment._id ?? comment.createdAt}
+            data={comment}
+            upvote={upvote}
+            deleteCommentHandler={deleteCommentHandler}
+          />
+        ))}
+      </div>
+    );
+  }
 };
 
 export default CommentBox;
