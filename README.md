@@ -3,3 +3,4 @@ For a Live demo, Go <a href="https://robo-blog.vercel.app/" target="_blank">here
 TODO:
 
 newly added messages need id. cant upvote or delete until theyre fetched from db for its \_id
+const { data: session, status } = useSession();

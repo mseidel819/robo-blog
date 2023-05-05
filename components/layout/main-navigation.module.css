@@ -22,7 +22,7 @@
 
 .header a {
   color: var(--color-grey-100);
-  font-size: var(--size-4);
+  font-size: var(--size-5);
 }
 
 .header a:hover,
@@ -37,15 +37,11 @@
   border: none;
   background-color: transparent;
   color: var(--color-grey-100);
-  font-size: 20px;
+  font-size: var(--size-5);
 }
 
-@media (min-width: 768px) {
-  .header ul {
-    gap: 0.5rem;
-  }
-
-  .header a {
-    font-size: var(--size-5);
+@media (max-width: 1000px) {
+  .header {
+    padding: 0 5%;
   }
 }
