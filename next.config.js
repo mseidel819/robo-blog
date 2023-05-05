@@ -11,11 +11,31 @@ const nextConfig = (phase) => {
         mongodb_clustername: process.env.CLUSTERNAME,
         mongodb_database: process.env.DATABASE,
       },
+      images: {
+        remotePatterns: [
+          {
+            protocol: "https",
+            hostname: "robohash.org",
+            port: "",
+            pathname: "/**",
+          },
+        ],
+      },
     };
   }
 
   return {
     reactStrictMode: true,
+    images: {
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: "robohash.org",
+          port: "",
+          pathname: "/**",
+        },
+      ],
+    },
   };
 };
 

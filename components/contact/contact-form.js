@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./contact-form.module.css";
 import Notification from "../ui/notification";
+import { useSession } from "next-auth/react";
 
 const sendContactData = async (contactDetails) => {
   const response = await fetch("/api/contact", {
@@ -19,6 +20,8 @@ const sendContactData = async (contactDetails) => {
 };
 
 const ContactForm = () => {
+  const { data: userSession, status } = useSession();
+
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredName, setEnteredName] = useState("");
   const [enteredMessage, setEnteredMessage] = useState("");
@@ -92,44 +95,51 @@ const ContactForm = () => {
         ...but if you insist, please fill out the form below, and my human slave
         might get back to you.
       </p>
-      <form className={styles.form} onSubmit={sendMessageHandler}>
-        <div className={styles.controls}>
-          <div className={styles.control}>
-            <label htmlFor="email">Your Email</label>
-            <input
-              type="email"
-              id="email"
-              required
-              value={enteredEmail}
-              onChange={(event) => setEnteredEmail(event.target.value)}
-            />
+      {userSession && (
+        <form className={styles.form} onSubmit={sendMessageHandler}>
+          <div className={styles.controls}>
+            <div className={styles.control}>
+              <label htmlFor="email">Your Email</label>
+              <input
+                type="email"
+                id="email"
+                required
+                value={enteredEmail}
+                onChange={(event) => setEnteredEmail(event.target.value)}
+              />
+            </div>
+            <div className={styles.control}>
+              <label htmlFor="name">Your Name</label>
+              <input
+                type="text"
+                id="name"
+                required
+                value={enteredName}
+                onChange={(event) => setEnteredName(event.target.value)}
+              />
+            </div>
           </div>
           <div className={styles.control}>
-            <label htmlFor="name">Your Name</label>
-            <input
-              type="text"
-              id="name"
+            <label htmlFor="message">Your Message</label>
+            <textarea
+              id="message"
+              rows="5"
               required
-              value={enteredName}
-              onChange={(event) => setEnteredName(event.target.value)}
-            />
+              value={enteredMessage}
+              onChange={(event) =>
+                setEnteredMessage(event.target.value)
+              }></textarea>
           </div>
+          <div className={styles.actions}>
+            <button>Send Message</button>
+          </div>
+        </form>
+      )}
+      {!userSession && (
+        <div className={styles.login}>
+          <p>Sign up or Log in to submit a message</p>
         </div>
-        <div className={styles.control}>
-          <label htmlFor="message">Your Message</label>
-          <textarea
-            id="message"
-            rows="5"
-            required
-            value={enteredMessage}
-            onChange={(event) =>
-              setEnteredMessage(event.target.value)
-            }></textarea>
-        </div>
-        <div className={styles.actions}>
-          <button>Send Message</button>
-        </div>
-      </form>
+      )}
       {notification && (
         <Notification
           status={notification.status}
@@ -140,4 +150,5 @@ const ContactForm = () => {
     </section>
   );
 };
+
 export default ContactForm;

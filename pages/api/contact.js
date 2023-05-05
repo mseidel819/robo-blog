@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import { connectToDb } from "@/lib/db";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
@@ -22,9 +23,8 @@ const handler = async (req, res) => {
 
     let client;
 
-    const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.frabwah.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
     try {
-      client = await MongoClient.connect(connectionString);
+      client = await connectToDb();
     } catch (err) {
       res.status(500).json({ message: "something went wrong" });
       return;
