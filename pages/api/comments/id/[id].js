@@ -2,7 +2,6 @@ import { connectToDb } from "@/lib/db";
 import { ObjectId } from "mongodb";
 
 const handler = async (req, res) => {
-  //   console.log(req.query);
   const { id } = req.query;
   const formattedId = new ObjectId(id);
 
@@ -19,11 +18,15 @@ const handler = async (req, res) => {
 
   if (req.method === "PATCH") {
     const { newContent } = req.body;
-    console.log(newContent);
     try {
-      result = await db
-        .collection("comments")
-        .updateOne({ _id: objectId }, { $set: { content: newContent } });
+      result = await db.collection("comments").updateOne(
+        { _id: formattedId },
+        {
+          $set: {
+            content: newContent,
+          },
+        }
+      );
     } catch (err) {
       client.close();
       res.status(500).json({ message: "could not find comments" });

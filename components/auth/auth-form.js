@@ -87,7 +87,7 @@ function AuthForm() {
 
       setRequestStatus("error");
 
-      console.log("oopx", err);
+      console.log("oops", err);
     }
   };
 

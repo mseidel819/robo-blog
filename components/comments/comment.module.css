@@ -76,6 +76,15 @@
 .delete:hover {
   color: var(--color-error-100);
 }
+.update {
+  border: none;
+  background-color: transparent;
+  font-weight: 700;
+
+  font-size: 16px;
+  color: var(--color-primary-300);
+}
+
 .content {
   opacity: 0.75;
 }

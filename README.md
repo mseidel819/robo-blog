@@ -4,5 +4,4 @@ TODO:
 
 add comment editing (with indicator that it was edited)
 
-ui adjustments for mobole
 change robohashback to username

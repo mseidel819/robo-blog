@@ -13,12 +13,10 @@ const PostDetailPage = ({ post }) => {
   const [loading, setLoading] = useState(false);
 
   const fetchComments = () => {
-    setLoading(true);
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         setComments(data.data);
-        setLoading(false);
       });
   };
 
@@ -82,7 +80,12 @@ const PostDetailPage = ({ post }) => {
   };
 
   const UpdateCommentHandler = (id, newContent) => {
-    console.log(id);
+    const prevComments = [...comments];
+    const newComments = comments.map((comment) => {
+      return comment._id === id ? { ...comment, content: newContent } : comment;
+    });
+    setComments(newComments);
+
     fetch(`/api/comments/id/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ id, newContent }),
@@ -103,7 +106,10 @@ const PostDetailPage = ({ post }) => {
         //   return comment._id !== id;
         // });
         // setComments(newComments);
-        // fetchComments();
+        fetchComments();
+      })
+      .catch((err) => {
+        setComments(prevComments);
       });
   };
 

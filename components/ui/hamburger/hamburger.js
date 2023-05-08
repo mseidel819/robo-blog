@@ -7,7 +7,6 @@ import { useSession, signOut } from "next-auth/react";
 const Hamburger = () => {
   const [active, setActive] = useState(false);
   const checkBoxStatus = useRef();
-  // console.log(checkBoxStatus.current.checked);
   const { data: session, status } = useSession();
 
   const bar1 = `${styles.bars} ${styles.bar1}`;
