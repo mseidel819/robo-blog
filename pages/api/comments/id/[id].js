@@ -6,17 +6,37 @@ const handler = async (req, res) => {
   const { id } = req.query;
   const formattedId = new ObjectId(id);
 
-  if (req.method === "DELETE") {
-    let client;
+  let client;
+  try {
+    client = await connectToDb();
+  } catch (err) {
+    res.status(500).json({ message: "something went wrong" });
+    return;
+  }
+
+  const db = client.db();
+  let result;
+
+  if (req.method === "PATCH") {
+    const { newContent } = req.body;
     try {
-      client = await connectToDb();
+      result = await db
+        .collection("comments")
+        .updateOne({ _id: objectId }, { $set: { content: newContent } });
     } catch (err) {
-      res.status(500).json({ message: "something went wrong" });
+      client.close();
+      res.status(500).json({ message: "could not find comments" });
       return;
     }
 
-    const db = client.db();
-    let result;
+    client.close();
+
+    res.status(201).json({
+      message: "Comment deleted",
+    });
+  }
+
+  if (req.method === "DELETE") {
     try {
       result = await db
         .collection("comments")

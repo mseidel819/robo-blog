@@ -1,14 +1,19 @@
 import styles from "./comment.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import CommentForm from "./comment-form";
+import Loader from "../ui/loader/loader";
 
-const Comment = ({ data, upvote, deleteCommentHandler }) => {
+const Comment = ({ data, upvote, deleteCommentHandler, loading }) => {
   const { data: session, status } = useSession();
   // const { user } = session;
 
   const [formattedDate, setDate] = useState();
+  const [editActive, setEditActive] = useState(false);
   const [width, setWidth] = useState();
+  const inputFormContent = useRef();
+
   const resizeHandler = () => setWidth(window.innerWidth);
 
   useEffect(() => {
@@ -52,6 +57,23 @@ const Comment = ({ data, upvote, deleteCommentHandler }) => {
     deleteCommentHandler(id);
   };
 
+  const updateToggler = () => {
+    setEditActive(!editActive);
+    // const id = data._id;
+    // UpdateCommentHandler(id, newContent);
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    const newContent = inputFormContent.current.value;
+    const id = data._id;
+
+    UpdateCommentHandler(id, newContent);
+
+    // addComment(comment);
+    // inputFormContent.current.value = "";
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.topBar}>
@@ -72,12 +94,38 @@ const Comment = ({ data, upvote, deleteCommentHandler }) => {
           <span className={`global-p ${styles.date}`}>{formattedDate}</span>
         </div>
         {session && session.user.email === data.user.email && width >= 768 && (
-          <button className={styles.delete} onClick={deleteHandler}>
-            Delete
-          </button>
+          <div>
+            <button className={styles.update} onClick={updateToggler}>
+              Update
+            </button>
+            <button className={styles.delete} onClick={deleteHandler}>
+              Delete
+            </button>
+          </div>
         )}
       </div>
-      <p className={`global-p ${styles.content}`}>{data.content}</p>
+
+      {!editActive && (
+        <p className={`global-p ${styles.content}`}>{data.content}</p>
+      )}
+      {editActive && (
+        <div>
+          <form className={styles.form} onSubmit={submitHandler}>
+            <textarea
+              className={styles.textarea}
+              rows="3"
+              value={data.content}
+              ref={inputFormContent}></textarea>
+
+            <div className={styles.mobile_form_submit}>
+              <button className={styles.button}>
+                {loading ? <Loader /> : "Send"}
+              </button>
+            </div>
+          </form>{" "}
+        </div>
+      )}
+
       {(!session || (session && session.user.email === data.user.email)) && (
         <div className={styles.action_bar}>
           <div className={styles.upvoter}>

@@ -81,10 +81,35 @@ const PostDetailPage = ({ post }) => {
       });
   };
 
+  const UpdateCommentHandler = (id, newContent) => {
+    fetch(`/api/comments/id/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ id, newContent }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return res.json().then((data) => {
+          throw new Error(data.message || "something went wrong");
+        });
+      })
+      .then((data) => {
+        // const newComments = comments.filter((comment) => {
+        //   return comment._id !== id;
+        // });
+        // setComments(newComments);
+        fetchComments();
+      });
+  };
+
   const deleteCommentHandler = (id) => {
     fetch(`/api/comments/id/${id}`, {
       method: "DELETE",
-      body: JSON.stringify({ id, hello: "hi" }),
+      // body: JSON.stringify({ id, hello: "hi" }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -124,6 +149,7 @@ const PostDetailPage = ({ post }) => {
           upvote={scoreChangeHandler}
           deleteCommentHandler={deleteCommentHandler}
           loading={loading}
+          UpdateCommentHandler={UpdateCommentHandler}
         />
       )}
 
