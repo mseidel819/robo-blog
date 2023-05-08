@@ -32,9 +32,9 @@ const PostItem = ({ post }) => {
           <Image
             src={imagePath}
             alt={title}
-            width={300}
-            height={200}
-            layout="responsive"
+            //  width={300}
+            // height={200}
+            fill
           />
         </div>
         <div className={styles.content}>
