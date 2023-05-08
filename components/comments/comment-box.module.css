@@ -8,3 +8,9 @@
   border-radius: 6px;
   padding: var(--size-4);
 }
+
+.loader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

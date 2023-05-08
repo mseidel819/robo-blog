@@ -11,6 +11,7 @@
 
 .content p {
   color: var(--color-grey-800);
+  font-size: 16px;
 }
 
 .content .image {

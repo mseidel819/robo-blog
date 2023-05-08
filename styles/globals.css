@@ -58,6 +58,11 @@ a {
   text-decoration: none;
 }
 
+textarea {
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+}
+
 button {
   font: inherit;
   cursor: pointer;

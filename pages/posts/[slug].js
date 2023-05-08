@@ -13,9 +13,13 @@ const PostDetailPage = ({ post }) => {
   const [loading, setLoading] = useState(false);
 
   const fetchComments = () => {
+    setLoading(true);
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
-      .then((data) => setComments(data.data));
+      .then((data) => {
+        setComments(data.data);
+        setLoading(false);
+      });
   };
 
   const addCommentHandler = (commentData) => {
@@ -103,9 +107,6 @@ const PostDetailPage = ({ post }) => {
   };
 
   useEffect(() => {
-    // fetch(`/api/comments/${slug}`)
-    //   .then((res) => res.json())
-    //   .then((data) => setComments(data.data));
     fetchComments();
   }, [slug]);
 
@@ -122,6 +123,7 @@ const PostDetailPage = ({ post }) => {
           comments={comments}
           upvote={scoreChangeHandler}
           deleteCommentHandler={deleteCommentHandler}
+          loading={loading}
         />
       )}
 

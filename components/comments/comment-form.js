@@ -9,6 +9,14 @@ const CommentForm = ({ slug, addComment, loading }) => {
   const { data: userSession, status } = useSession();
   const [commentDate, setDate] = useState();
 
+  const [width, setWidth] = useState();
+  const resizeHandler = () => setWidth(window.innerWidth);
+
+  useEffect(() => {
+    resizeHandler();
+    window.addEventListener("resize", resizeHandler);
+  }, []);
+
   useEffect(() => {
     setDate(new Date());
   }, []);
@@ -33,7 +41,7 @@ const CommentForm = ({ slug, addComment, loading }) => {
     inputFormContent.current.value = "";
   };
 
-  if (userSession) {
+  if (userSession && width >= 768) {
     return (
       <div className={styles.content}>
         <div className={styles.image}>
@@ -42,6 +50,7 @@ const CommentForm = ({ slug, addComment, loading }) => {
               src={`https://robohash.org/${userSession.user.email}?size=106x106`}
               height={66}
               width={66}
+              // fill
               alt={userSession.user.name}
             />
           )}
@@ -54,9 +63,38 @@ const CommentForm = ({ slug, addComment, loading }) => {
             ref={inputFormContent}></textarea>
           <button className={styles.button}>
             {loading ? <Loader /> : "Send"}
-            {/* <Loader /> */}
-            {/* Send */}
           </button>
+        </form>
+      </div>
+    );
+  }
+
+  if (userSession && width < 768) {
+    return (
+      <div className={styles.content}>
+        <form className={styles.form} onSubmit={submitHandler}>
+          <textarea
+            className={styles.textarea}
+            rows="3"
+            placeholder="add a comment..."
+            ref={inputFormContent}></textarea>
+
+          <div className={styles.mobile_form_submit}>
+            <div className={styles.image}>
+              {userSession && (
+                <Image
+                  src={`https://robohash.org/${userSession.user.email}?size=106x106`}
+                  height={66}
+                  width={66}
+                  // fill
+                  alt={userSession.user.name}
+                />
+              )}
+            </div>
+            <button className={styles.button}>
+              {loading ? <Loader /> : "Send"}
+            </button>
+          </div>
         </form>
       </div>
     );
@@ -64,7 +102,7 @@ const CommentForm = ({ slug, addComment, loading }) => {
 
   return (
     <div className={styles.content}>
-      <p>log in to leave a comment</p>
+      <p className="global-p">Log in to leave a comment</p>
     </div>
   );
 };

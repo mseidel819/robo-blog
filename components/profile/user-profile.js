@@ -98,13 +98,12 @@ function UserProfile() {
             <Image
               priority
               src={`https://robohash.org/${session.user.email}?size=236x236`}
-              height={236}
-              width={236}
+              fill
               alt={session.user.name}
             />
           )}
         </div>
-        <h1>{session.user.name}&apos;s profile</h1>
+        <h1 className="global-header-1">{session.user.name}&apos;s profile</h1>
 
         <ProfileForm
           onChangeUsername={changeUsernameHandler}
