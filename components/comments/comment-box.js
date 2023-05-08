@@ -7,6 +7,7 @@ const CommentBox = ({
   upvote,
   deleteCommentHandler,
   loading,
+  UpdateCommentHandler,
 }) => {
   const filteredComments = comments
     .filter((comment) => comment.articleId === slug)
@@ -31,6 +32,8 @@ const CommentBox = ({
             data={comment}
             upvote={upvote}
             deleteCommentHandler={deleteCommentHandler}
+            UpdateCommentHandler={UpdateCommentHandler}
+            loading={loading}
           />
         ))}
       </div>

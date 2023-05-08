@@ -3,7 +3,7 @@ import ProfileForm from "./profile-form";
 import styles from "./user-profile.module.css";
 import Image from "next/image";
 import Notification from "../ui/notification";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 function UserProfile() {
   const { data: session, update } = useSession();
@@ -97,7 +97,7 @@ function UserProfile() {
           {session.user.name && (
             <Image
               priority
-              src={`https://robohash.org/${session.user.email}?size=236x236`}
+              src={`https://robohash.org/${session.user.name}?size=236x236`}
               fill
               alt={session.user.name}
             />

@@ -13,12 +13,10 @@ const PostDetailPage = ({ post }) => {
   const [loading, setLoading] = useState(false);
 
   const fetchComments = () => {
-    setLoading(true);
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         setComments(data.data);
-        setLoading(false);
       });
   };
 
@@ -81,10 +79,44 @@ const PostDetailPage = ({ post }) => {
       });
   };
 
+  const UpdateCommentHandler = (id, newContent) => {
+    const prevComments = [...comments];
+    const newComments = comments.map((comment) => {
+      return comment._id === id ? { ...comment, content: newContent } : comment;
+    });
+    setComments(newComments);
+
+    fetch(`/api/comments/id/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ id, newContent }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return res.json().then((data) => {
+          throw new Error(data.message || "something went wrong");
+        });
+      })
+      .then((data) => {
+        // const newComments = comments.filter((comment) => {
+        //   return comment._id !== id;
+        // });
+        // setComments(newComments);
+        fetchComments();
+      })
+      .catch((err) => {
+        setComments(prevComments);
+      });
+  };
+
   const deleteCommentHandler = (id) => {
     fetch(`/api/comments/id/${id}`, {
       method: "DELETE",
-      body: JSON.stringify({ id, hello: "hi" }),
+      // body: JSON.stringify({ id, hello: "hi" }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -124,6 +156,7 @@ const PostDetailPage = ({ post }) => {
           upvote={scoreChangeHandler}
           deleteCommentHandler={deleteCommentHandler}
           loading={loading}
+          UpdateCommentHandler={UpdateCommentHandler}
         />
       )}
 

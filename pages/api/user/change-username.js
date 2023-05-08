@@ -7,7 +7,6 @@ const handler = async (req, res) => {
     return;
   }
   const { newUsername } = req.body;
-  console.log(req.body);
 
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
