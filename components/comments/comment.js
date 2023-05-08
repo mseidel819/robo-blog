@@ -122,23 +122,13 @@ const Comment = ({
           </form>
         </div>
       )}
-
-      {(!session || (session && session.user.email === data.user.email)) && (
-        <div className={styles.action_bar}>
+      <div className={styles.action_bar}>
+        {(!session || (session && session.user.email === data.user.email)) && (
           <div className={styles.upvoter}>
             <span>{data.score}</span>
           </div>
-
-          {width < 768 && (
-            <button className={styles.delete} onClick={deleteHandler}>
-              Delete
-            </button>
-          )}
-        </div>
-      )}
-
-      {session && session.user.email !== data.user.email && (
-        <div className={styles.action_bar}>
+        )}
+        {session && session.user.email !== data.user.email && (
           <div className={styles.upvoter}>
             <button className={styles.score_btn} onClick={upvoteHandler}>
               +
@@ -148,16 +138,26 @@ const Comment = ({
               -
             </button>
           </div>
-          <div className={styles.add_delete}></div>
-        </div>
-      )}
+        )}
 
-      {data.replies.length > 0 &&
+        {session && session.user.email === data.user.email && width < 768 && (
+          <div>
+            <button className={styles.update} onClick={updateToggler}>
+              Update
+            </button>
+            <button className={styles.delete} onClick={deleteHandler}>
+              Delete
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* {data.replies.length > 0 &&
         data.replies.map((reply) => (
           <div key={reply._id} className={styles.reply_container}>
             <Comment data={reply} />
           </div>
-        ))}
+        ))} */}
     </div>
   );
 };

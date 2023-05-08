@@ -1,4 +1,3 @@
-// import MobileNav from "@/components/layout/mobile-navigation";
 import styles from "./hamburger.module.css";
 import Link from "next/link";
 import { useState, useRef } from "react";
