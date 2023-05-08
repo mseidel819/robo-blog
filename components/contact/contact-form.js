@@ -49,9 +49,7 @@ const ContactForm = () => {
         message: enteredMessage,
       });
       setRequestStatus("success");
-      // setEnteredEmail("");
       setEnteredMessage("");
-      // setEnteredName("");
     } catch (err) {
       setRequestStatus("error");
       setRequestError(err.message);

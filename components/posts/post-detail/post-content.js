@@ -16,16 +16,6 @@ const PostContent = ({ post }) => {
   const imagePath = `/images/posts/${post.slug}/${post.image}`;
 
   const customRenderers = {
-    // img(image) {
-    //   return (
-    //     <Image
-    //       src={`/images/posts/${post.slug}/${image.properties.src}`}
-    //       height={300}
-    //       width={600}
-    //       alt={image.alt}
-    //     />
-    //   );
-    // },
     p(paragraph) {
       const { node } = paragraph;
 

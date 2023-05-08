@@ -2,7 +2,6 @@ import styles from "./comment.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
-import CommentForm from "./comment-form";
 import Loader from "../ui/loader/loader";
 
 const Comment = ({
@@ -13,7 +12,6 @@ const Comment = ({
   UpdateCommentHandler,
 }) => {
   const { data: session, status } = useSession();
-  // const { user } = session;
 
   const [formattedDate, setDate] = useState();
   const [editActive, setEditActive] = useState(false);
@@ -39,11 +37,6 @@ const Comment = ({
     setDate(formattedDate1);
   }, [data.createdAt]);
 
-  // const formattedDate = new Date(data.createdAt).toLocaleDateString("en-US", {
-  //   day: "numeric",
-  //   month: "long",
-  //   year: "numeric",
-  // });
   const upvoteHandler = () => {
     const newScore = data.score + 1;
     const id = data._id;
@@ -75,8 +68,6 @@ const Comment = ({
 
     UpdateCommentHandler(id, newContent);
 
-    // addComment(comment);
-    // inputFormContent.current.value = "";
     updateToggler();
   };
 

@@ -3,7 +3,7 @@ import ProfileForm from "./profile-form";
 import styles from "./user-profile.module.css";
 import Image from "next/image";
 import Notification from "../ui/notification";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 function UserProfile() {
   const { data: session, update } = useSession();
