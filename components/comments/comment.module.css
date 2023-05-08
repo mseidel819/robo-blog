@@ -12,10 +12,8 @@
   display: flex;
   gap: 16px;
   align-items: center;
-  /* font-weight: 700; */
 }
 .date {
-  font-size: 16px;
   opacity: 0.5;
 }
 .userImg {
@@ -32,11 +30,6 @@
   font-size: 12px;
   line-height: normal;
   padding: 2px 6px;
-}
-.username {
-  /* margin-right: 24px; */
-  font-weight: 700;
-  font-family: "Oswald";
 }
 
 .action_bar {
@@ -83,8 +76,20 @@
 .delete:hover {
   color: var(--color-error-100);
 }
+.content {
+  opacity: 0.75;
+}
 
 .container p {
   /* background-color: blue; */
-  margin-left: 60px;
+  margin-left: 16px;
+}
+
+@media (max-width: 768px) {
+  .author {
+    gap: 8px;
+  }
+  .you {
+    font-size: 8px;
+  }
 }

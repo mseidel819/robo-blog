@@ -8,6 +8,13 @@ const Comment = ({ data, upvote, deleteCommentHandler }) => {
   // const { user } = session;
 
   const [formattedDate, setDate] = useState();
+  const [width, setWidth] = useState();
+  const resizeHandler = () => setWidth(window.innerWidth);
+
+  useEffect(() => {
+    resizeHandler();
+    window.addEventListener("resize", resizeHandler);
+  }, []);
 
   useEffect(() => {
     const formattedDate1 = new Date(data.createdAt).toLocaleDateString(
@@ -57,24 +64,31 @@ const Comment = ({ data, upvote, deleteCommentHandler }) => {
               alt={data.user.username}
             />
           </div>
-          <span className={styles.username}>{data.user.username}</span>
+          <span className={`global-header-3`}>{data.user.username}</span>
           {session && session.user.email === data.user.email && (
             <span className={styles.you}>you</span>
           )}
-          <span className={styles.date}>{formattedDate}</span>
+
+          <span className={`global-p ${styles.date}`}>{formattedDate}</span>
         </div>
-        {session && session.user.email === data.user.email && (
+        {session && session.user.email === data.user.email && width >= 768 && (
           <button className={styles.delete} onClick={deleteHandler}>
             Delete
           </button>
         )}
       </div>
-      <p className={styles.content}>{data.content}</p>
+      <p className={`global-p ${styles.content}`}>{data.content}</p>
       {(!session || (session && session.user.email === data.user.email)) && (
         <div className={styles.action_bar}>
           <div className={styles.upvoter}>
             <span>{data.score}</span>
           </div>
+
+          {width < 768 && (
+            <button className={styles.delete} onClick={deleteHandler}>
+              Delete
+            </button>
+          )}
         </div>
       )}
 
