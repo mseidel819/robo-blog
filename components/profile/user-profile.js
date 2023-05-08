@@ -97,7 +97,7 @@ function UserProfile() {
           {session.user.name && (
             <Image
               priority
-              src={`https://robohash.org/${session.user.email}?size=236x236`}
+              src={`https://robohash.org/${session.user.name}?size=236x236`}
               fill
               alt={session.user.name}
             />
