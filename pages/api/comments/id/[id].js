@@ -19,6 +19,7 @@ const handler = async (req, res) => {
 
   if (req.method === "PATCH") {
     const { newContent } = req.body;
+    console.log(newContent);
     try {
       result = await db
         .collection("comments")

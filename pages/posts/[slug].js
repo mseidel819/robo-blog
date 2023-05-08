@@ -82,6 +82,7 @@ const PostDetailPage = ({ post }) => {
   };
 
   const UpdateCommentHandler = (id, newContent) => {
+    console.log(id);
     fetch(`/api/comments/id/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ id, newContent }),
@@ -102,7 +103,7 @@ const PostDetailPage = ({ post }) => {
         //   return comment._id !== id;
         // });
         // setComments(newComments);
-        fetchComments();
+        // fetchComments();
       });
   };
 

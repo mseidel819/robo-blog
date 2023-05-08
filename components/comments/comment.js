@@ -5,7 +5,13 @@ import { useState, useEffect, useRef } from "react";
 import CommentForm from "./comment-form";
 import Loader from "../ui/loader/loader";
 
-const Comment = ({ data, upvote, deleteCommentHandler, loading }) => {
+const Comment = ({
+  data,
+  upvote,
+  deleteCommentHandler,
+  loading,
+  UpdateCommentHandler,
+}) => {
   const { data: session, status } = useSession();
   // const { user } = session;
 
@@ -59,9 +65,8 @@ const Comment = ({ data, upvote, deleteCommentHandler, loading }) => {
 
   const updateToggler = () => {
     setEditActive(!editActive);
-    // const id = data._id;
-    // UpdateCommentHandler(id, newContent);
   };
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -72,6 +77,7 @@ const Comment = ({ data, upvote, deleteCommentHandler, loading }) => {
 
     // addComment(comment);
     // inputFormContent.current.value = "";
+    updateToggler();
   };
 
   return (
@@ -114,7 +120,7 @@ const Comment = ({ data, upvote, deleteCommentHandler, loading }) => {
             <textarea
               className={styles.textarea}
               rows="3"
-              value={data.content}
+              defaultValue={data.content}
               ref={inputFormContent}></textarea>
 
             <div className={styles.mobile_form_submit}>
@@ -122,7 +128,7 @@ const Comment = ({ data, upvote, deleteCommentHandler, loading }) => {
                 {loading ? <Loader /> : "Send"}
               </button>
             </div>
-          </form>{" "}
+          </form>
         </div>
       )}
 
