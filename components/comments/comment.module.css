@@ -106,6 +106,22 @@
   background-color: var(--color-grey-50);
   resize: none;
 }
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: var(--color-primary-400);
+  color: white;
+  border-radius: 4px;
+  /* height: 48px; */
+  /* width: 96px; */
+  padding: 4px 13px;
+}
+
+.button:hover {
+  background-color: var(--color-primary-200);
+}
 
 .mobile_form_submit {
   display: flex;
