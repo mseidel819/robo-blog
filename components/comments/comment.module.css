@@ -49,6 +49,7 @@
 
 .upvoter span {
   margin: auto;
+  /* max-width: 32px; */
 }
 .score_btn {
   border: none;

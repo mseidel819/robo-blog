@@ -14,6 +14,7 @@ const Comment = ({ data, loading }) => {
 
   const [formattedDate, setDate] = useState();
   const [editActive, setEditActive] = useState(false);
+  const [scoreLoading, setScoreLoading] = useState(false);
   const [width, setWidth] = useState();
   const inputFormContent = useRef();
 
@@ -43,7 +44,7 @@ const Comment = ({ data, loading }) => {
       id,
       newScore,
     };
-
+    setScoreLoading(true);
     fetch(`/api/comments/${data.articleId}`, {
       method: "PATCH",
       body: JSON.stringify({ id, newScore }),
@@ -61,9 +62,11 @@ const Comment = ({ data, loading }) => {
       })
       .then((data) => {
         dispatch(changeScore(payload));
+        setScoreLoading(false);
       })
       .catch((err) => {
         console.log("error", err);
+        setScoreLoading(false);
       });
   };
   const UpdateCommentHandler = (id, newContent) => {
@@ -206,7 +209,13 @@ const Comment = ({ data, loading }) => {
             <button className={styles.score_btn} onClick={upvoteHandler}>
               +
             </button>
-            <span>{data.score}</span>
+            {!scoreLoading && <span>{data.score}</span>}
+            {scoreLoading && (
+              <span>
+                <Loader size="24px" color="black" />
+              </span>
+            )}
+
             <button className={styles.score_btn} onClick={downvoteHandler}>
               -
             </button>
