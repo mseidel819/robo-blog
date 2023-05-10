@@ -3,20 +3,22 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import Loader from "../ui/loader/loader";
-
-const Comment = ({
-  data,
-  upvote,
-  deleteCommentHandler,
-  loading,
-  UpdateCommentHandler,
-}) => {
+import { useDispatch } from "react-redux";
+import {
+  changeScore,
+  commentEdited,
+  commentRemoved,
+} from "@/store/comments/comments.reducer";
+const Comment = ({ data, loading }) => {
   const { data: session, status } = useSession();
 
   const [formattedDate, setDate] = useState();
   const [editActive, setEditActive] = useState(false);
+  const [scoreLoading, setScoreLoading] = useState(false);
   const [width, setWidth] = useState();
   const inputFormContent = useRef();
+
+  const dispatch = useDispatch();
 
   const resizeHandler = () => setWidth(window.innerWidth);
 
@@ -37,17 +39,91 @@ const Comment = ({
     setDate(formattedDate1);
   }, [data.createdAt]);
 
+  const scoreChangeHandler = (id, newScore) => {
+    const payload = {
+      id,
+      newScore,
+    };
+    setScoreLoading(true);
+    fetch(`/api/comments/${data.articleId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ id, newScore }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return res.json().then((data) => {
+          throw new Error(data.message || "something went wrong");
+        });
+      })
+      .then((data) => {
+        dispatch(changeScore(payload));
+        setScoreLoading(false);
+      })
+      .catch((err) => {
+        console.log("error", err);
+        setScoreLoading(false);
+      });
+  };
+  const UpdateCommentHandler = (id, newContent) => {
+    fetch(`/api/comments/id/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ id, newContent }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return res.json().then((data) => {
+          throw new Error(data.message || "something went wrong");
+        });
+      })
+      .then((data) => {
+        dispatch(commentEdited({ id, newContent }));
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+  };
+
+  const deleteCommentHandler = (id) => {
+    fetch(`/api/comments/id/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return res.json().then((data) => {
+          throw new Error(data.message || "something went wrong");
+        });
+      })
+      .then((data) => {
+        dispatch(commentRemoved(id));
+      });
+  };
+
   const upvoteHandler = () => {
     const newScore = data.score + 1;
     const id = data._id;
 
-    upvote(id, newScore);
+    scoreChangeHandler(id, newScore);
   };
 
   const downvoteHandler = () => {
     const newScore = data.score - 1;
     const id = data._id;
-    upvote(id, newScore);
+    scoreChangeHandler(id, newScore);
   };
 
   const deleteHandler = () => {
@@ -133,7 +209,13 @@ const Comment = ({
             <button className={styles.score_btn} onClick={upvoteHandler}>
               +
             </button>
-            <span>{data.score}</span>
+            {!scoreLoading && <span>{data.score}</span>}
+            {scoreLoading && (
+              <span>
+                <Loader size="24px" color="black" />
+              </span>
+            )}
+
             <button className={styles.score_btn} onClick={downvoteHandler}>
               -
             </button>

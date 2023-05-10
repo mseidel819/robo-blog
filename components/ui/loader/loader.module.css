@@ -1,17 +1,17 @@
 .container {
   display: flex;
   align-items: center;
-  margin: 0 12px;
+  /* margin: 0 12px; */
 }
 .container svg {
-  height: 32px;
+  /* height: 32px; */
   transform-origin: center;
   animation: rotate4 2s linear infinite;
 }
 
 .container circle {
   fill: none;
-  stroke: hsl(214, 97%, 59%);
+  /* stroke: hsl(214, 97%, 59%); */
   stroke-width: 2;
   stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;

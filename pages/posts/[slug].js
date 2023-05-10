@@ -5,141 +5,29 @@ import { getPostData, getPostFiles } from "@/lib/posts-util";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setComments } from "@/store/comments/comments.reducer";
 
 const PostDetailPage = ({ post }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const { slug } = router.query;
-  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchComments = () => {
+    setLoading(true);
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
       .then((data) => {
-        setComments(data.data);
-      });
-  };
-
-  const addCommentHandler = (commentData) => {
-    setLoading(true);
-    fetch(`/api/comments/${slug}`, {
-      method: "POST",
-      body: JSON.stringify(commentData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return res.json().then((data) => {
-          throw new Error(data.message || "something went wrong");
-        });
-      })
-      .then((data) => {
-        // res.status(201).json({ message: "comment succesfully added!" });
-        setComments([...comments, commentData]);
-        fetchComments();
+        dispatch(setComments(data.data));
         setLoading(false);
-      })
-      .catch((err) => {
-        // res.status(401).json({ message: "Could not add comment" });
-        setLoading(false);
-      });
-  };
-
-  const scoreChangeHandler = (id, newScore) => {
-    const prevComments = [...comments];
-    const newComments = comments.map((comment) => {
-      return comment._id === id ? { ...comment, score: newScore } : comment;
-    });
-    setComments(newComments);
-
-    fetch(`/api/comments/${slug}`, {
-      method: "PATCH",
-      body: JSON.stringify({ id, newScore }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return res.json().then((data) => {
-          throw new Error(data.message || "something went wrong");
-        });
-      })
-      .then((data) => {
-        fetchComments();
-      })
-      .catch((err) => {
-        setComments(prevComments);
-      });
-  };
-
-  const UpdateCommentHandler = (id, newContent) => {
-    const prevComments = [...comments];
-    const newComments = comments.map((comment) => {
-      return comment._id === id ? { ...comment, content: newContent } : comment;
-    });
-    setComments(newComments);
-
-    fetch(`/api/comments/id/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ id, newContent }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return res.json().then((data) => {
-          throw new Error(data.message || "something went wrong");
-        });
-      })
-      .then((data) => {
-        // const newComments = comments.filter((comment) => {
-        //   return comment._id !== id;
-        // });
-        // setComments(newComments);
-        fetchComments();
-      })
-      .catch((err) => {
-        setComments(prevComments);
-      });
-  };
-
-  const deleteCommentHandler = (id) => {
-    fetch(`/api/comments/id/${id}`, {
-      method: "DELETE",
-      // body: JSON.stringify({ id, hello: "hi" }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return res.json().then((data) => {
-          throw new Error(data.message || "something went wrong");
-        });
-      })
-      .then((data) => {
-        const newComments = comments.filter((comment) => {
-          return comment._id !== id;
-        });
-        setComments(newComments);
-        fetchComments();
       });
   };
 
   useEffect(() => {
-    fetchComments();
+    fetchComments(slug);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   return (
@@ -149,22 +37,9 @@ const PostDetailPage = ({ post }) => {
         <meta name="description" content={post.excerpt} />
       </Head>
       <PostContent post={post} />
-      {comments && (
-        <CommentBox
-          slug={post.slug}
-          comments={comments}
-          upvote={scoreChangeHandler}
-          deleteCommentHandler={deleteCommentHandler}
-          loading={loading}
-          UpdateCommentHandler={UpdateCommentHandler}
-        />
-      )}
+      <CommentBox slug={post.slug} loading={loading} />
 
-      <CommentForm
-        loading={loading}
-        slug={post.slug}
-        addComment={addCommentHandler}
-      />
+      <CommentForm slug={post.slug} />
     </>
   );
 };
