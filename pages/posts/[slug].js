@@ -27,6 +27,7 @@ const PostDetailPage = ({ post }) => {
 
   useEffect(() => {
     fetchComments(slug);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   return (
