@@ -9,7 +9,8 @@ const Hero = () => {
           src="/images/site/robo-blogger.jpg"
           height={300}
           width={300}
-          alt="An image showing Matt"
+          alt="An image showing roboBlogger"
+          priority
         />
       </div>
       <h1>Hi, My name is &lt;ROBO_BLOGGER&gt;</h1>

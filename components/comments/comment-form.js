@@ -87,11 +87,18 @@ const CommentForm = ({ slug }) => {
           )}
         </div>
         <form className={styles.form} onSubmit={submitHandler}>
-          <textarea
-            className={styles.textarea}
-            rows="3"
-            placeholder="add a comment..."
-            ref={inputFormContent}></textarea>
+          {!loading && (
+            <textarea
+              className={styles.textarea}
+              rows="3"
+              placeholder="add a comment..."
+              ref={inputFormContent}></textarea>
+          )}
+          {loading && (
+            <div className={styles.formloader}>
+              <Loader />
+            </div>
+          )}
           <button className={styles.button}>
             {loading ? <Loader /> : "Send"}
           </button>
@@ -104,11 +111,18 @@ const CommentForm = ({ slug }) => {
     return (
       <div className={styles.content}>
         <form className={styles.form} onSubmit={submitHandler}>
-          <textarea
-            className={styles.textarea}
-            rows="3"
-            placeholder="add a comment..."
-            ref={inputFormContent}></textarea>
+          {!loading && (
+            <textarea
+              className={styles.textarea}
+              rows="3"
+              placeholder="add a comment..."
+              ref={inputFormContent}></textarea>
+          )}
+          {loading && (
+            <div className={styles.formloader}>
+              <Loader />
+            </div>
+          )}
 
           <div className={styles.mobile_form_submit}>
             <div className={styles.image}>
