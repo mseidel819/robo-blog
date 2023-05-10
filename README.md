@@ -12,3 +12,6 @@ only get one vote. undo vote.
 new options:
 undoVote- if voted option is clicked, the opposite score changer goes. active color removed.
 oppositeVote- if opposite vote is clicked, undoVote is fired, and active vote color added.
+
+tests
+typescript
