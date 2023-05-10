@@ -57,14 +57,22 @@ export const commentsSlice = createSlice({
       state.comments = editComment(state.comments, action.payload);
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
+  extraReducers(builder) {
+    builder.addCase(HYDRATE, (state, action) => {
       return {
         ...state,
         ...action.payload.comments,
       };
-    },
+    });
   },
+  // extraReducers: {
+  //   [HYDRATE]: (state, action) => {
+  //     return {
+  //       ...state,
+  //       ...action.payload.comments,
+  //     };
+  //   },
+  // },
 });
 
 export const {

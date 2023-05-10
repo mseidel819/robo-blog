@@ -123,6 +123,17 @@
 .button:hover {
   background-color: var(--color-primary-200);
 }
+.editContainer {
+  display: flex;
+  width: 120px;
+  align-items: center;
+}
+.loadcontainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .mobile_form_submit {
   display: flex;

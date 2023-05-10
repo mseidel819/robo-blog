@@ -15,6 +15,8 @@ const Comment = ({ data, loading }) => {
   const [formattedDate, setDate] = useState();
   const [editActive, setEditActive] = useState(false);
   const [scoreLoading, setScoreLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [width, setWidth] = useState();
   const inputFormContent = useRef();
 
@@ -70,6 +72,7 @@ const Comment = ({ data, loading }) => {
       });
   };
   const UpdateCommentHandler = (id, newContent) => {
+    setUpdateLoading(true);
     fetch(`/api/comments/id/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ id, newContent }),
@@ -87,13 +90,16 @@ const Comment = ({ data, loading }) => {
       })
       .then((data) => {
         dispatch(commentEdited({ id, newContent }));
+        setUpdateLoading(false);
       })
       .catch((err) => {
         console.log("error", err);
+        setUpdateLoading(false);
       });
   };
 
   const deleteCommentHandler = (id) => {
+    setDeleteLoading(true);
     fetch(`/api/comments/id/${id}`, {
       method: "DELETE",
       headers: {
@@ -110,6 +116,7 @@ const Comment = ({ data, loading }) => {
       })
       .then((data) => {
         dispatch(commentRemoved(id));
+        setDeleteLoading(false);
       });
   };
 
@@ -167,19 +174,32 @@ const Comment = ({ data, loading }) => {
           <span className={`global-p ${styles.date}`}>{formattedDate}</span>
         </div>
         {session && session.user.email === data.user.email && width >= 768 && (
-          <div>
+          <div className={styles.editContainer}>
             <button className={styles.update} onClick={updateToggler}>
               Update
             </button>
-            <button className={styles.delete} onClick={deleteHandler}>
-              Delete
-            </button>
+            {!deleteLoading && (
+              <button className={styles.delete} onClick={deleteHandler}>
+                Delete
+              </button>
+            )}
+            {deleteLoading && (
+              <div className={styles.loadcontainer}>
+                <Loader size="16px" color="red" />
+              </div>
+            )}
           </div>
         )}
       </div>
 
-      {!editActive && (
+      {!editActive && !updateLoading && (
         <p className={`global-p ${styles.content}`}>{data.content}</p>
+      )}
+
+      {!editActive && updateLoading && (
+        <div className={styles.loadcontainer}>
+          <Loader />
+        </div>
       )}
       {editActive && (
         <div>
@@ -223,13 +243,20 @@ const Comment = ({ data, loading }) => {
         )}
 
         {session && session.user.email === data.user.email && width < 768 && (
-          <div>
+          <div className={styles.editContainer}>
             <button className={styles.update} onClick={updateToggler}>
               Update
             </button>
-            <button className={styles.delete} onClick={deleteHandler}>
-              Delete
-            </button>
+            {!deleteLoading && (
+              <button className={styles.delete} onClick={deleteHandler}>
+                Delete
+              </button>
+            )}
+            {deleteLoading && (
+              <div className={styles.loadcontainer}>
+                <Loader size="16px" color="red" />
+              </div>
+            )}
           </div>
         )}
       </div>
