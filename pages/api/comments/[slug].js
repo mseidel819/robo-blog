@@ -51,7 +51,8 @@ const handler = async (req, res) => {
 
     try {
       const result = await db.collection("comments").insertOne(newComment);
-      newComment.id = result.insertedId;
+      // newComment.id = result.insertedId;
+      // console.log(newComment);
     } catch (err) {
       client.close();
       res.status(500).json({ message: "storing message failed" });
@@ -62,6 +63,7 @@ const handler = async (req, res) => {
 
     res.status(201).json({
       message: "success. stored message",
+      data: newComment,
     });
   }
 

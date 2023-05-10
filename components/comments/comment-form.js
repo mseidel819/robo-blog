@@ -6,10 +6,11 @@ import Loader from "../ui/loader/loader";
 import { useDispatch } from "react-redux";
 import { addToComments } from "@/store/comments/comments.reducer";
 
-const CommentForm = ({ slug, loading }) => {
+const CommentForm = ({ slug }) => {
   const inputFormContent = useRef();
   const { data: userSession, status } = useSession();
   const [commentDate, setDate] = useState();
+  const [loading, setLoading] = useState();
 
   const [width, setWidth] = useState();
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const CommentForm = ({ slug, loading }) => {
   }, []);
 
   const addCommentHandler = (commentData) => {
-    // setLoading(true);
+    setLoading(true);
     fetch(`/api/comments/${slug}`, {
       method: "POST",
       body: JSON.stringify(commentData),
@@ -43,13 +44,12 @@ const CommentForm = ({ slug, loading }) => {
         });
       })
       .then((data) => {
-        dispatch(addToComments(commentData));
-        // fetchComments();
-        // setLoading(false);
+        dispatch(addToComments(data.data));
+        setLoading(false);
       })
       .catch((err) => {
         console.log("error", err);
-        // setLoading(false);
+        setLoading(false);
       });
   };
 
@@ -68,7 +68,6 @@ const CommentForm = ({ slug, loading }) => {
       },
       replies: [],
     };
-
     addCommentHandler(comment);
     inputFormContent.current.value = "";
   };

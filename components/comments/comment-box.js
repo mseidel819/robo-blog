@@ -28,11 +28,7 @@ const CommentBox = ({ slug, loading }) => {
     return (
       <div className={styles.content}>
         {filteredComments.map((comment) => (
-          <Comment
-            key={comment._id ?? comment.createdAt}
-            data={comment}
-            loading={loading}
-          />
+          <Comment key={comment._id} data={comment} loading={loading} />
         ))}
       </div>
     );

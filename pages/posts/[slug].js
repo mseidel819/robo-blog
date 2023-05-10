@@ -10,10 +10,10 @@ import { setComments } from "@/store/comments/comments.reducer";
 
 const PostDetailPage = ({ post }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const { slug } = router.query;
   const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch();
 
   const fetchComments = () => {
     setLoading(true);
@@ -39,7 +39,7 @@ const PostDetailPage = ({ post }) => {
       <PostContent post={post} />
       <CommentBox slug={post.slug} loading={loading} />
 
-      <CommentForm loading={loading} slug={post.slug} />
+      <CommentForm slug={post.slug} />
     </>
   );
 };
