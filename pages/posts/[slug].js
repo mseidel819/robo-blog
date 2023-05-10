@@ -5,23 +5,35 @@ import { getPostData, getPostFiles } from "@/lib/posts-util";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setComments,
+  addToComments,
+  changeScore,
+  commentRemoved,
+} from "@/store/comments/comments.reducer";
+import { selectComments } from "@/store/comments/comments.selector";
 
 const PostDetailPage = ({ post }) => {
   const router = useRouter();
   const { slug } = router.query;
-  const [comments, setComments] = useState([]);
+  // const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const comments = useSelector(selectComments);
 
   const fetchComments = () => {
     fetch(`/api/comments/${slug}`)
       .then((res) => res.json())
       .then((data) => {
-        setComments(data.data);
+        dispatch(setComments(data.data));
       });
   };
 
   const addCommentHandler = (commentData) => {
-    setLoading(true);
+    // setLoading(true);
     fetch(`/api/comments/${slug}`, {
       method: "POST",
       body: JSON.stringify(commentData),
@@ -38,10 +50,9 @@ const PostDetailPage = ({ post }) => {
         });
       })
       .then((data) => {
-        // res.status(201).json({ message: "comment succesfully added!" });
-        setComments([...comments, commentData]);
-        fetchComments();
-        setLoading(false);
+        dispatch(addToComments(commentData));
+        // fetchComments();
+        // setLoading(false);
       })
       .catch((err) => {
         // res.status(401).json({ message: "Could not add comment" });
@@ -50,11 +61,10 @@ const PostDetailPage = ({ post }) => {
   };
 
   const scoreChangeHandler = (id, newScore) => {
-    const prevComments = [...comments];
-    const newComments = comments.map((comment) => {
-      return comment._id === id ? { ...comment, score: newScore } : comment;
-    });
-    setComments(newComments);
+    const payload = {
+      id,
+      newScore,
+    };
 
     fetch(`/api/comments/${slug}`, {
       method: "PATCH",
@@ -72,11 +82,9 @@ const PostDetailPage = ({ post }) => {
         });
       })
       .then((data) => {
-        fetchComments();
+        dispatch(changeScore(payload));
       })
-      .catch((err) => {
-        setComments(prevComments);
-      });
+      .catch((err) => {});
   };
 
   const UpdateCommentHandler = (id, newContent) => {
@@ -116,7 +124,6 @@ const PostDetailPage = ({ post }) => {
   const deleteCommentHandler = (id) => {
     fetch(`/api/comments/id/${id}`, {
       method: "DELETE",
-      // body: JSON.stringify({ id, hello: "hi" }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -130,11 +137,7 @@ const PostDetailPage = ({ post }) => {
         });
       })
       .then((data) => {
-        const newComments = comments.filter((comment) => {
-          return comment._id !== id;
-        });
-        setComments(newComments);
-        fetchComments();
+        dispatch(commentRemoved(id));
       });
   };
 

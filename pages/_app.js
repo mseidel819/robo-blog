@@ -2,13 +2,11 @@ import "@/styles/globals.css";
 import Layout from "@/components/layout/layout";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
+import { wrapper } from "../store/store";
 import { Provider } from "react-redux";
-import { store } from "@/store/store";
 
-export default function App({
-  Component,
-  pageProps: { session, ...pageProps },
-}) {
+function App({ Component, pageProps: { session, ...pageProps } }) {
+  const { store, props } = wrapper.useWrappedStore(pageProps);
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
@@ -28,3 +26,5 @@ export default function App({
     </Provider>
   );
 }
+
+export default App;

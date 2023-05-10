@@ -1,37 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 
 const INITIAL_STATE = {
   comments: null,
 };
 
-//////////////////////////////////////////////////////////////////////////////////
-const increaseScore = (comments, commentId) => {
+const scoreChanger = (comments, update) => {
+  const { id, newScore } = update;
+
   const newComments = comments.map((comment) => {
-    return comment.id === commentId
-      ? { ...comment, score: comment.score + 1 }
-      : comment;
+    return comment._id === id ? { ...comment, score: newScore } : comment;
   });
   return newComments;
 };
 
-//////////////////////////////////////////////////////////////////////////////////
-const decreaseScore = (comments, commentId) => {
-  const newComments = comments.map((comment) => {
-    return comment.id === commentId
-      ? { ...comment, score: comment.score - 1 }
-      : comment;
-  });
-
-  return newComments;
-};
-//////////////////////////////////////////////////////////////////////////////////
 const addComment = (comments, newComment) => {
   return [...comments, newComment];
 };
+
 //////////////////////////////////////////////////////////////////////////////////
 const removeComment = (comments, currentId) => {
   const filteredComments = comments.filter((comment) => {
-    return comment.id !== currentId;
+    return comment._id !== currentId;
   });
 
   return filteredComments;
@@ -56,6 +46,7 @@ export const commentEdited = (comments, content, user) => {
   const edit = editComment(comments, content, user);
   // return createAction(COMMENTS_ACTION_TYPES.SET_COMMENTS, edit);
 };
+
 //////////////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////////////
@@ -70,19 +61,24 @@ export const commentsSlice = createSlice({
     addToComments(state, action) {
       state.comments = addComment(state.comments, action.payload);
     },
-    scoreIncreased(state, action) {
-      state.comments = increaseScore(state.comments, action.payload);
-    },
-    scoreDecreased(state, action) {
-      state.comments = decreaseScore(state.comments, action.payload);
+    changeScore(state, action) {
+      state.comments = scoreChanger(state.comments, action.payload);
     },
     commentRemoved(state, action) {
-      state.comments = removeComment(state.comments, action, payload);
+      state.comments = removeComment(state.comments, action.payload);
+    },
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.comments,
+      };
     },
   },
 });
 
-export const { setComments, addToComments, scoreIncreased, scoreDecreased } =
+export const { setComments, addToComments, changeScore, commentRemoved } =
   commentsSlice.actions;
 
 export const commentsReducer = commentsSlice.reducer;
