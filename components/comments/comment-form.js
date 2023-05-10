@@ -3,13 +3,17 @@ import { useRef, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Loader from "../ui/loader/loader";
+import { useDispatch } from "react-redux";
+import { addToComments } from "@/store/comments/comments.reducer";
 
-const CommentForm = ({ slug, addComment, loading }) => {
+const CommentForm = ({ slug, loading }) => {
   const inputFormContent = useRef();
   const { data: userSession, status } = useSession();
   const [commentDate, setDate] = useState();
 
   const [width, setWidth] = useState();
+  const dispatch = useDispatch();
+
   const resizeHandler = () => setWidth(window.innerWidth);
 
   useEffect(() => {
@@ -20,6 +24,34 @@ const CommentForm = ({ slug, addComment, loading }) => {
   useEffect(() => {
     setDate(new Date());
   }, []);
+
+  const addCommentHandler = (commentData) => {
+    // setLoading(true);
+    fetch(`/api/comments/${slug}`, {
+      method: "POST",
+      body: JSON.stringify(commentData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return res.json().then((data) => {
+          throw new Error(data.message || "something went wrong");
+        });
+      })
+      .then((data) => {
+        dispatch(addToComments(commentData));
+        // fetchComments();
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.log("error", err);
+        // setLoading(false);
+      });
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -37,7 +69,7 @@ const CommentForm = ({ slug, addComment, loading }) => {
       replies: [],
     };
 
-    addComment(comment);
+    addCommentHandler(comment);
     inputFormContent.current.value = "";
   };
 

@@ -18,7 +18,6 @@ const addComment = (comments, newComment) => {
   return [...comments, newComment];
 };
 
-//////////////////////////////////////////////////////////////////////////////////
 const removeComment = (comments, currentId) => {
   const filteredComments = comments.filter((comment) => {
     return comment._id !== currentId;
@@ -27,28 +26,15 @@ const removeComment = (comments, currentId) => {
   return filteredComments;
 };
 
-//////////////////////////////////////////////////////////////////////////////////
-const editComment = (comments, content, user) => {
-  const newComment = {
-    ...user,
-    content: content,
-  };
+const editComment = (comments, payload) => {
+  const { id, newContent } = payload;
 
-  const targetComment = comments.find((comment) => comment.id === user.id);
-
-  return [
-    ...comments.filter((comment) => comment.id !== targetComment?.id),
-    newComment,
-  ];
+  const newComments = comments.map((comment) => {
+    return comment._id === id ? { ...comment, content: newContent } : comment;
+  });
+  return newComments;
 };
 
-export const commentEdited = (comments, content, user) => {
-  const edit = editComment(comments, content, user);
-  // return createAction(COMMENTS_ACTION_TYPES.SET_COMMENTS, edit);
-};
-
-//////////////////////////////////////////////////////////////////////////////////
-//
 //////////////////////////////////////////////////////////////////////////////////
 
 export const commentsSlice = createSlice({
@@ -67,6 +53,9 @@ export const commentsSlice = createSlice({
     commentRemoved(state, action) {
       state.comments = removeComment(state.comments, action.payload);
     },
+    commentEdited(state, action) {
+      state.comments = editComment(state.comments, action.payload);
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -78,7 +67,12 @@ export const commentsSlice = createSlice({
   },
 });
 
-export const { setComments, addToComments, changeScore, commentRemoved } =
-  commentsSlice.actions;
+export const {
+  setComments,
+  addToComments,
+  changeScore,
+  commentRemoved,
+  commentEdited,
+} = commentsSlice.actions;
 
 export const commentsReducer = commentsSlice.reducer;
