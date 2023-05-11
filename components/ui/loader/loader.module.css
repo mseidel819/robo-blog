@@ -40,3 +40,9 @@
     stroke-dashoffset: -125px;
   }
 }
+
+@media (max-width: 768px) {
+  .container {
+    align-items: stretch;
+  }
+}
