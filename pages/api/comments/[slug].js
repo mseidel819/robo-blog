@@ -68,7 +68,7 @@ const handler = async (req, res) => {
   }
 
   if (req.method === "PATCH" && req.body.newScore) {
-    const { id, newScore } = req.body;
+    const { id, newScore, userEmail, voteDirection } = req.body;
     let client;
 
     const objectId = new ObjectId(id);
@@ -86,10 +86,36 @@ const handler = async (req, res) => {
     try {
       const commentCollection = await db.collection("comments");
 
-      const result = await commentCollection.updateOne(
-        { _id: objectId },
-        { $set: { score: newScore } }
-      );
+      // const result = await commentCollection.updateOne(
+      //   { _id: objectId },
+      //   { $set: { score: newScore } }
+      // );
+
+      const findUser = await commentCollection.findOne({ _id: objectId });
+
+      let result;
+
+      if (!userEmail) throw new Error("no user found");
+
+      if (
+        voteDirection === "upvoted" &&
+        !findUser.upvoted.includes(userEmail)
+      ) {
+        result = await commentCollection.updateOne(
+          { _id: objectId },
+          { $set: { score: newScore }, $push: { upvoted: userEmail } }
+        );
+      }
+
+      if (
+        voteDirection === "downvoted" &&
+        !findUser.downvoted.includes(userEmail)
+      ) {
+        result = await commentCollection.updateOne(
+          { _id: objectId },
+          { $set: { score: newScore }, $push: { downvoted: userEmail } }
+        );
+      }
 
       if (result.length === 0) {
         res.status(404).json({ message: "comment not found" });

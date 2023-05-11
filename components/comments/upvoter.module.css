@@ -1,0 +1,23 @@
+.upvoter {
+  display: flex;
+  justify-content: space-between;
+  height: 36px;
+  width: 100px;
+  border-radius: 8px;
+  background-color: var(--color-primary-100);
+  overflow: hidden;
+}
+
+.upvoter span {
+  margin: auto;
+  /* max-width: 32px; */
+}
+.score_btn {
+  border: none;
+  background-color: transparent;
+  width: 32px;
+  color: black;
+}
+.score_btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
