@@ -4,8 +4,14 @@ import Loader from "../ui/loader/loader";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeScore } from "@/store/comments/comments.reducer";
+import { Comment } from "@/types";
+import { ObjectId } from "bson";
 
-const Upvoter = ({ data }) => {
+type Props = {
+  data: Comment;
+};
+
+const Upvoter = ({ data }: Props) => {
   const { data: session, status } = useSession();
   const [scoreLoading, setScoreLoading] = useState(false);
   const dispatch = useDispatch();
@@ -15,13 +21,19 @@ const Upvoter = ({ data }) => {
     userEmail = session.user.email;
   }
 
-  const scoreChangeHandler = (id, email, voteDirection) => {
+  const scoreChangeHandler = (
+    id: ObjectId,
+    email: string,
+    voteDirection: "upvoted" | "downvoted"
+  ) => {
     const payload = {
       id,
       email,
       voteDirection,
     };
+
     setScoreLoading(true);
+
     fetch(`/api/comments/${data.articleId}`, {
       method: "PATCH",
       body: JSON.stringify({ id, userEmail, voteDirection }),

@@ -1,7 +1,7 @@
 import styles from "./comment.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import Loader from "../ui/loader/loader";
 import { useDispatch } from "react-redux";
 import {
@@ -9,15 +9,22 @@ import {
   commentRemoved,
 } from "@/store/comments/comments.reducer";
 import Upvoter from "./upvoter";
-const Comment = ({ data, loading }) => {
+import { Comment } from "@/types";
+import { ObjectId, ObjectIdExtended } from "bson";
+
+type Props = {
+  data: Comment;
+  loading: boolean;
+};
+const Comment = ({ data, loading }: Props) => {
   const { data: session, status } = useSession();
 
-  const [formattedDate, setDate] = useState();
+  const [formattedDate, setDate] = useState<string | undefined>();
   const [editActive, setEditActive] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
-  const [width, setWidth] = useState();
-  const inputFormContent = useRef();
+  const [width, setWidth] = useState<number | undefined>();
+  const inputFormContent = useRef<HTMLTextAreaElement>();
 
   const dispatch = useDispatch();
 
@@ -40,7 +47,7 @@ const Comment = ({ data, loading }) => {
     setDate(formattedDate1);
   }, [data.createdAt]);
 
-  const UpdateCommentHandler = (id, newContent) => {
+  const UpdateCommentHandler = (id: ObjectId, newContent: string) => {
     setUpdateLoading(true);
     fetch(`/api/comments/id/${id}`, {
       method: "PATCH",
@@ -67,7 +74,7 @@ const Comment = ({ data, loading }) => {
       });
   };
 
-  const deleteCommentHandler = (id) => {
+  const deleteCommentHandler = (id: ObjectId) => {
     setDeleteLoading(true);
     fetch(`/api/comments/id/${id}`, {
       method: "DELETE",
@@ -99,7 +106,7 @@ const Comment = ({ data, loading }) => {
     setEditActive(!editActive);
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: FormEvent) => {
     e.preventDefault();
 
     const newContent = inputFormContent.current.value;
@@ -162,7 +169,7 @@ const Comment = ({ data, loading }) => {
           <form className={styles.form} onSubmit={submitHandler}>
             <textarea
               className={styles.textarea}
-              rows="3"
+              rows={3}
               defaultValue={data.content}
               ref={inputFormContent}></textarea>
 

@@ -2,8 +2,8 @@ import React from "react";
 import styles from "./loader.module.css";
 
 type Props = {
-  size: string;
-  color: string;
+  size?: string;
+  color?: string;
 };
 
 const Loader = ({ size = "32px", color = "hsl(214, 97%, 59%)" }: Props) => {
