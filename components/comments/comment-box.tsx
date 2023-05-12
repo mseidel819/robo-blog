@@ -17,7 +17,10 @@ const CommentBox = ({ slug, loading }: Props) => {
   if (comments) {
     filteredComments = comments
       .filter((comment) => comment.articleId === slug)
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
   }
 
   if (loading) {
@@ -35,7 +38,7 @@ const CommentBox = ({ slug, loading }: Props) => {
       <div className={styles.content}>
         {filteredComments.map((comment) => (
           <Comment
-            key={parseInt(comment._id.toHexString(), 16)}
+            key={comment._id.toString()}
             data={comment}
             loading={loading}
           />
