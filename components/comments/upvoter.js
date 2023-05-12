@@ -10,7 +10,10 @@ const Upvoter = ({ data }) => {
   const [scoreLoading, setScoreLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const userEmail = session.user.email ?? "";
+  let userEmail = "";
+  if (session) {
+    userEmail = session.user.email;
+  }
 
   const scoreChangeHandler = (id, email, voteDirection) => {
     const payload = {
