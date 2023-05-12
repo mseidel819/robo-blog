@@ -7,12 +7,17 @@ import css from "react-syntax-highlighter/dist/cjs/languages/prism/css";
 import PostHeader from "./post-header";
 import styles from "./post-content.module.css";
 import Image from "next/image";
+import { PostData } from "@/types";
 
 SyntaxHighlighter.registerLanguage("js", js);
 SyntaxHighlighter.registerLanguage("arduino", arduino);
 SyntaxHighlighter.registerLanguage("css", css);
 
-const PostContent = ({ post }) => {
+type Props = {
+  post: PostData;
+};
+
+const PostContent = ({ post }: Props) => {
   const imagePath = `/images/posts/${post.slug}/${post.image}`;
 
   const customRenderers = {

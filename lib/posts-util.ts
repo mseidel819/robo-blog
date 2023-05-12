@@ -1,12 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-
-type PostData = {
-  slug: string;
-
-  [key: string]: any;
-};
+import { PostData } from "@/types";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
