@@ -116,6 +116,15 @@ const handler = async (req, res) => {
             { $push: { upvoted: userEmail } }
           );
         }
+      } else if (
+        voteDirection === "upvoted" &&
+        findUser.upvoted &&
+        findUser.upvoted.includes(userEmail)
+      ) {
+        result = await commentCollection.updateOne(
+          { _id: objectId },
+          { $pull: { upvoted: userEmail } }
+        );
       }
 
       if (
@@ -137,6 +146,15 @@ const handler = async (req, res) => {
             { $push: { downvoted: userEmail } }
           );
         }
+      } else if (
+        voteDirection === "downvoted" &&
+        (findUser.downvoted === undefined ||
+          (findUser.downvoted && findUser.downvoted.includes(userEmail)))
+      ) {
+        result = await commentCollection.updateOne(
+          { _id: objectId },
+          { $pull: { downvoted: userEmail } }
+        );
       }
 
       if (result.length === 0) {

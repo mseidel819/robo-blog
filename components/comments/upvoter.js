@@ -65,7 +65,7 @@ const Upvoter = ({ data }) => {
     <>
       {(!session || (session && session.user.email === data.user.email)) && (
         <div className={styles.upvoter}>
-          <span>{data.score}</span>
+          <span>{getScore()}</span>
         </div>
       )}
       {session && session.user.email !== data.user.email && (
