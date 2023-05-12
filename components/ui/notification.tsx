@@ -1,9 +1,16 @@
 import ReactDOM from "react-dom";
 
 import classes from "./notification.module.css";
+import React from "react";
 
-function Notification(props) {
-  const { title, message, status } = props;
+type NotificationProps = {
+  title: string;
+  message: string;
+  status: "pending" | "success" | "error";
+};
+
+function Notification({ title, message, status }: NotificationProps) {
+  // const { title, message, status } = props;
 
   let statusClasses = "";
 
