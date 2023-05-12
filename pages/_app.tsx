@@ -4,9 +4,11 @@ import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { wrapper } from "../store/store";
 import { Provider } from "react-redux";
+import { AppProps } from "next/app";
 
-function App({ Component, pageProps: { session, ...pageProps } }) {
+function App({ Component, pageProps }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(pageProps);
+  const { session, ...rest } = props;
   return (
     <Provider store={store}>
       <SessionProvider session={session}>

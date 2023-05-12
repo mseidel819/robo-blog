@@ -1,8 +1,13 @@
 import AllPosts from "@/components/posts/all-posts";
 import { getAllPosts } from "@/lib/posts-util";
+import { PostData } from "@/types";
 import Head from "next/head";
 
-const AllPostsPage = ({ posts }) => {
+type Props = {
+  posts: PostData[];
+};
+
+const AllPostsPage = ({ posts }: Props) => {
   return (
     <>
       <Head>
