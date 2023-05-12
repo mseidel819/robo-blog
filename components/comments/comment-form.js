@@ -55,13 +55,13 @@ const CommentForm = ({ slug }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // const commentDate = new Date();
 
     const comment = {
       articleId: slug,
       content: inputFormContent.current.value,
       createdAt: commentDate,
-      score: 0,
+      upvoted: [],
+      downvoted: [],
       user: {
         username: userSession.user.name,
         email: userSession.user.email,

@@ -67,8 +67,8 @@ const handler = async (req, res) => {
     });
   }
 
-  if (req.method === "PATCH" && req.body.newScore) {
-    const { id, newScore } = req.body;
+  if (req.method === "PATCH" && req.body.voteDirection) {
+    const { id, userEmail, voteDirection } = req.body;
     let client;
 
     const objectId = new ObjectId(id);
@@ -86,10 +86,76 @@ const handler = async (req, res) => {
     try {
       const commentCollection = await db.collection("comments");
 
-      const result = await commentCollection.updateOne(
-        { _id: objectId },
-        { $set: { score: newScore } }
-      );
+      // const result = await commentCollection.updateOne(
+      //   { _id: objectId },
+      //   { $set: { score: newScore } }
+      // );
+
+      const findUser = await commentCollection.findOne({ _id: objectId });
+
+      let result;
+
+      if (!userEmail) throw new Error("no user found");
+
+      if (
+        voteDirection === "upvoted" &&
+        (findUser.upvoted === undefined ||
+          (findUser.upvoted && !findUser.upvoted.includes(userEmail)))
+      ) {
+        if (findUser.downvoted && findUser.downvoted.includes(userEmail)) {
+          result = await commentCollection.updateOne(
+            { _id: objectId },
+            {
+              $pull: { downvoted: userEmail },
+              $push: { upvoted: userEmail },
+            }
+          );
+        } else {
+          result = await commentCollection.updateOne(
+            { _id: objectId },
+            { $push: { upvoted: userEmail } }
+          );
+        }
+      } else if (
+        voteDirection === "upvoted" &&
+        findUser.upvoted &&
+        findUser.upvoted.includes(userEmail)
+      ) {
+        result = await commentCollection.updateOne(
+          { _id: objectId },
+          { $pull: { upvoted: userEmail } }
+        );
+      }
+
+      if (
+        voteDirection === "downvoted" &&
+        (findUser.downvoted === undefined ||
+          (findUser.downvoted && !findUser.downvoted.includes(userEmail)))
+      ) {
+        if (findUser.upvoted && findUser.upvoted.includes(userEmail)) {
+          result = await commentCollection.updateOne(
+            { _id: objectId },
+            {
+              $pull: { upvoted: userEmail },
+              $push: { downvoted: userEmail },
+            }
+          );
+        } else {
+          result = await commentCollection.updateOne(
+            { _id: objectId },
+            { $push: { downvoted: userEmail } }
+          );
+        }
+      } else if (
+        voteDirection === "downvoted" &&
+        (findUser.downvoted === undefined ||
+          (findUser.downvoted && findUser.downvoted.includes(userEmail)))
+      ) {
+        result = await commentCollection.updateOne(
+          { _id: objectId },
+          { $pull: { downvoted: userEmail } }
+        );
+      }
 
       if (result.length === 0) {
         res.status(404).json({ message: "comment not found" });

@@ -5,16 +5,15 @@ import { useState, useEffect, useRef } from "react";
 import Loader from "../ui/loader/loader";
 import { useDispatch } from "react-redux";
 import {
-  changeScore,
   commentEdited,
   commentRemoved,
 } from "@/store/comments/comments.reducer";
+import Upvoter from "./upvoter";
 const Comment = ({ data, loading }) => {
   const { data: session, status } = useSession();
 
   const [formattedDate, setDate] = useState();
   const [editActive, setEditActive] = useState(false);
-  const [scoreLoading, setScoreLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [width, setWidth] = useState();
@@ -41,36 +40,6 @@ const Comment = ({ data, loading }) => {
     setDate(formattedDate1);
   }, [data.createdAt]);
 
-  const scoreChangeHandler = (id, newScore) => {
-    const payload = {
-      id,
-      newScore,
-    };
-    setScoreLoading(true);
-    fetch(`/api/comments/${data.articleId}`, {
-      method: "PATCH",
-      body: JSON.stringify({ id, newScore }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return res.json().then((data) => {
-          throw new Error(data.message || "something went wrong");
-        });
-      })
-      .then((data) => {
-        dispatch(changeScore(payload));
-        setScoreLoading(false);
-      })
-      .catch((err) => {
-        console.log("error", err);
-        setScoreLoading(false);
-      });
-  };
   const UpdateCommentHandler = (id, newContent) => {
     setUpdateLoading(true);
     fetch(`/api/comments/id/${id}`, {
@@ -118,19 +87,6 @@ const Comment = ({ data, loading }) => {
         dispatch(commentRemoved(id));
         setDeleteLoading(false);
       });
-  };
-
-  const upvoteHandler = () => {
-    const newScore = data.score + 1;
-    const id = data._id;
-
-    scoreChangeHandler(id, newScore);
-  };
-
-  const downvoteHandler = () => {
-    const newScore = data.score - 1;
-    const id = data._id;
-    scoreChangeHandler(id, newScore);
   };
 
   const deleteHandler = () => {
@@ -219,28 +175,7 @@ const Comment = ({ data, loading }) => {
         </div>
       )}
       <div className={styles.action_bar}>
-        {(!session || (session && session.user.email === data.user.email)) && (
-          <div className={styles.upvoter}>
-            <span>{data.score}</span>
-          </div>
-        )}
-        {session && session.user.email !== data.user.email && (
-          <div className={styles.upvoter}>
-            <button className={styles.score_btn} onClick={upvoteHandler}>
-              +
-            </button>
-            {!scoreLoading && <span>{data.score}</span>}
-            {scoreLoading && (
-              <span>
-                <Loader size="24px" color="black" />
-              </span>
-            )}
-
-            <button className={styles.score_btn} onClick={downvoteHandler}>
-              -
-            </button>
-          </div>
-        )}
+        <Upvoter data={data} />
 
         {session && session.user.email === data.user.email && width < 768 && (
           <div className={styles.editContainer}>
