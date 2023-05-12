@@ -12,15 +12,16 @@ const Upvoter = ({ data }) => {
 
   const userEmail = session.user.email;
 
-  const scoreChangeHandler = (id, newScore, voteDirection) => {
+  const scoreChangeHandler = (id, email, voteDirection) => {
     const payload = {
       id,
-      newScore,
+      email,
+      voteDirection,
     };
     setScoreLoading(true);
     fetch(`/api/comments/${data.articleId}`, {
       method: "PATCH",
-      body: JSON.stringify({ id, newScore, userEmail, voteDirection }),
+      body: JSON.stringify({ id, userEmail, voteDirection }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -44,16 +45,20 @@ const Upvoter = ({ data }) => {
   };
 
   const upvoteHandler = () => {
-    const newScore = data.score + 1;
     const id = data._id;
 
-    scoreChangeHandler(id, newScore, "upvoted");
+    scoreChangeHandler(id, userEmail, "upvoted");
   };
 
   const downvoteHandler = () => {
-    const newScore = data.score - 1;
     const id = data._id;
-    scoreChangeHandler(id, newScore, "downvoted");
+    scoreChangeHandler(id, userEmail, "downvoted");
+  };
+
+  const getScore = () => {
+    const upvotes = data.upvoted ? data.upvoted.length : 0;
+    const downvotes = data.downvoted ? data.downvoted.length : 0;
+    return upvotes - downvotes;
   };
 
   return (
@@ -68,7 +73,7 @@ const Upvoter = ({ data }) => {
           <button className={styles.score_btn} onClick={upvoteHandler}>
             +
           </button>
-          {!scoreLoading && <span>{data.score}</span>}
+          {!scoreLoading && <span>{getScore()}</span>}
           {scoreLoading && (
             <span>
               <Loader size="24px" color="black" />

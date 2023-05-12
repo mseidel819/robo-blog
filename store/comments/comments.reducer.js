@@ -6,10 +6,21 @@ const INITIAL_STATE = {
 };
 
 const scoreChanger = (comments, update) => {
-  const { id, newScore } = update;
+  const { id, email, voteDirection } = update;
 
   const newComments = comments.map((comment) => {
-    return comment._id === id ? { ...comment, score: newScore } : comment;
+    if (comment._id === id && voteDirection === "upvoted") {
+      const filter = comment.downvoted.filter((el) => el !== email);
+      comment.upvoted.push(email);
+
+      return { ...comment, downvoted: filter };
+    } else if (comment._id === id && voteDirection === "downvoted") {
+      const filter = comment.upvoted.filter((el) => el !== email);
+      comment.downvoted.push(email);
+      return { ...comment, upvoted: filter };
+    } else {
+      return comment;
+    }
   });
   return newComments;
 };

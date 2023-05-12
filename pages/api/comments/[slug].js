@@ -67,8 +67,8 @@ const handler = async (req, res) => {
     });
   }
 
-  if (req.method === "PATCH" && req.body.newScore) {
-    const { id, newScore, userEmail, voteDirection } = req.body;
+  if (req.method === "PATCH" && req.body.voteDirection) {
+    const { id, userEmail, voteDirection } = req.body;
     let client;
 
     const objectId = new ObjectId(id);
@@ -99,22 +99,44 @@ const handler = async (req, res) => {
 
       if (
         voteDirection === "upvoted" &&
-        !findUser.upvoted.includes(userEmail)
+        (findUser.upvoted === undefined ||
+          (findUser.upvoted && !findUser.upvoted.includes(userEmail)))
       ) {
-        result = await commentCollection.updateOne(
-          { _id: objectId },
-          { $set: { score: newScore }, $push: { upvoted: userEmail } }
-        );
+        if (findUser.downvoted && findUser.downvoted.includes(userEmail)) {
+          result = await commentCollection.updateOne(
+            { _id: objectId },
+            {
+              $pull: { downvoted: userEmail },
+              $push: { upvoted: userEmail },
+            }
+          );
+        } else {
+          result = await commentCollection.updateOne(
+            { _id: objectId },
+            { $push: { upvoted: userEmail } }
+          );
+        }
       }
 
       if (
         voteDirection === "downvoted" &&
-        !findUser.downvoted.includes(userEmail)
+        (findUser.downvoted === undefined ||
+          (findUser.downvoted && !findUser.downvoted.includes(userEmail)))
       ) {
-        result = await commentCollection.updateOne(
-          { _id: objectId },
-          { $set: { score: newScore }, $push: { downvoted: userEmail } }
-        );
+        if (findUser.upvoted && findUser.upvoted.includes(userEmail)) {
+          result = await commentCollection.updateOne(
+            { _id: objectId },
+            {
+              $pull: { upvoted: userEmail },
+              $push: { downvoted: userEmail },
+            }
+          );
+        } else {
+          result = await commentCollection.updateOne(
+            { _id: objectId },
+            { $push: { downvoted: userEmail } }
+          );
+        }
       }
 
       if (result.length === 0) {
