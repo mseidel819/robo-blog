@@ -2,8 +2,13 @@ import Hero from "@/components/home-page/hero";
 import FeaturedPosts from "@/components/home-page/featured-posts";
 import { getFeaturedPosts } from "@/lib/posts-util";
 import Head from "next/head";
+import { PostData } from "@/types";
 
-const HomePage = ({ posts }) => {
+type Props = {
+  posts: PostData[];
+};
+
+const HomePage = ({ posts }: Props) => {
   return (
     <>
       <Head>

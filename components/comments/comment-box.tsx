@@ -4,13 +4,23 @@ import styles from "./comment-box.module.css";
 import { useSelector } from "react-redux";
 import { selectComments } from "@/store/comments/comments.selector";
 
-const CommentBox = ({ slug, loading }) => {
-  const comments = useSelector(selectComments);
-  let filteredComments = [];
+type Props = {
+  slug: string;
+  loading: boolean;
+};
+
+const CommentBox = ({ slug, loading }: Props) => {
+  const comments: Comment[] = useSelector(selectComments);
+
+  let filteredComments: Comment[] = [];
+
   if (comments) {
     filteredComments = comments
       .filter((comment) => comment.articleId === slug)
-      .sort((a, b) => b.createdAt - a.createdAt);
+      .sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
   }
 
   if (loading) {
@@ -27,7 +37,11 @@ const CommentBox = ({ slug, loading }) => {
     return (
       <div className={styles.content}>
         {filteredComments.map((comment) => (
-          <Comment key={comment._id} data={comment} loading={loading} />
+          <Comment
+            key={comment._id.toString()}
+            data={comment}
+            loading={loading}
+          />
         ))}
       </div>
     );

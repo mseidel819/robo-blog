@@ -2,10 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./post-item.module.css";
 import { useState, useEffect } from "react";
+import { PostData } from "@/types";
 
-const PostItem = ({ post }) => {
+type Props = {
+  post: PostData;
+};
+
+const PostItem = ({ post }: Props) => {
   const { title, image, excerpt, date, slug } = post;
-  const [formattedDate, setDate] = useState();
+  const [formattedDate, setDate] = useState<string | null>();
 
   useEffect(() => {
     const formattedDate1 = new Date(date).toLocaleDateString("en-US", {

@@ -2,7 +2,12 @@ import Image from "next/image";
 
 import styles from "./post-header.module.css";
 
-const PostHeader = ({ title, image }) => {
+type Props = {
+  title: string;
+  image: string;
+};
+
+const PostHeader = ({ title, image }: Props) => {
   return (
     <header className={styles.header}>
       <h1>{title}</h1>

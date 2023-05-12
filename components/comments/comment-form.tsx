@@ -1,18 +1,23 @@
 import styles from "./comment-form.module.css";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, FormEvent } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Loader from "../ui/loader/loader";
 import { useDispatch } from "react-redux";
 import { addToComments } from "@/store/comments/comments.reducer";
+import { Comment } from "@/types";
 
-const CommentForm = ({ slug }) => {
-  const inputFormContent = useRef();
+type Props = {
+  slug: string;
+};
+
+const CommentForm = ({ slug }: Props) => {
+  const inputFormContent = useRef<HTMLTextAreaElement>();
   const { data: userSession, status } = useSession();
-  const [commentDate, setDate] = useState();
-  const [loading, setLoading] = useState();
+  const [commentDate, setDate] = useState<Date | undefined>();
+  const [loading, setLoading] = useState(false);
 
-  const [width, setWidth] = useState();
+  const [width, setWidth] = useState<number | undefined>();
   const dispatch = useDispatch();
 
   const resizeHandler = () => setWidth(window.innerWidth);
@@ -26,7 +31,7 @@ const CommentForm = ({ slug }) => {
     setDate(new Date());
   }, []);
 
-  const addCommentHandler = (commentData) => {
+  const addCommentHandler = (commentData: Comment) => {
     setLoading(true);
     fetch(`/api/comments/${slug}`, {
       method: "POST",
@@ -35,13 +40,12 @@ const CommentForm = ({ slug }) => {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => {
+      .then(async (res) => {
         if (res.ok) {
           return res.json();
         }
-        return res.json().then((data) => {
-          throw new Error(data.message || "something went wrong");
-        });
+        const data = await res.json();
+        throw new Error(data.message || "something went wrong");
       })
       .then((data) => {
         dispatch(addToComments(data.data));
@@ -53,7 +57,7 @@ const CommentForm = ({ slug }) => {
       });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: FormEvent) => {
     e.preventDefault();
 
     const comment = {
@@ -90,7 +94,7 @@ const CommentForm = ({ slug }) => {
           {!loading && (
             <textarea
               className={styles.textarea}
-              rows="3"
+              rows={3}
               placeholder="add a comment..."
               ref={inputFormContent}></textarea>
           )}
@@ -114,7 +118,7 @@ const CommentForm = ({ slug }) => {
           {!loading && (
             <textarea
               className={styles.textarea}
-              rows="3"
+              rows={3}
               placeholder="add a comment..."
               ref={inputFormContent}></textarea>
           )}

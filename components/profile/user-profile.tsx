@@ -4,12 +4,15 @@ import styles from "./user-profile.module.css";
 import Image from "next/image";
 import Notification from "../ui/notification";
 import { useState, useEffect } from "react";
+import React from "react";
 
 function UserProfile() {
   const { data: session, update } = useSession();
 
-  const [requestStatus, setRequestStatus] = useState();
-  const [requestError, setRequestError] = useState();
+  const [requestStatus, setRequestStatus] = useState<
+    "success" | "error" | "pending" | null
+  >();
+  const [requestError, setRequestError] = useState<string | null>();
 
   useEffect(() => {
     if (requestStatus === "success" || requestStatus === "error") {

@@ -7,8 +7,18 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setComments } from "@/store/comments/comments.reducer";
+import { PostData } from "@/types";
+import {
+  GetStaticPathsContext,
+  GetStaticProps,
+  GetStaticPropsContext,
+} from "next/types";
 
-const PostDetailPage = ({ post }) => {
+type Props = {
+  post: PostData;
+};
+
+const PostDetailPage: React.FC<Props> = ({ post }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -26,9 +36,9 @@ const PostDetailPage = ({ post }) => {
   };
 
   useEffect(() => {
-    fetchComments(slug);
+    fetchComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
+  }, []);
 
   return (
     <>
@@ -44,10 +54,12 @@ const PostDetailPage = ({ post }) => {
   );
 };
 
-export const getStaticProps = (context) => {
+export const getStaticProps: GetStaticProps<Props> = (
+  context: GetStaticPropsContext
+) => {
   const { params } = context;
 
-  const postData = getPostData(params.slug);
+  const postData = getPostData(params.slug as string);
 
   return {
     props: {

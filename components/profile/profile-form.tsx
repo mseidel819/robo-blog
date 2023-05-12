@@ -1,16 +1,26 @@
-import { useRef } from "react";
+import { FormEvent, useRef } from "react";
 import classes from "./profile-form.module.css";
+import React from "react";
 
-function ProfileForm({ onChangePassword, onChangeUsername }) {
-  const newPasswordInput = useRef();
-  const oldPasswordInput = useRef();
-  const newUsernameInput = useRef();
+type PasswordData = {
+  oldPassword: string;
+  newPassword: string;
+};
+type Props = {
+  onChangePassword: (passwordData: PasswordData) => void;
+  onChangeUsername: (newUsername: string) => void;
+};
 
-  const passwordSubmitHandler = (e) => {
+function ProfileForm({ onChangePassword, onChangeUsername }: Props) {
+  const newPasswordInput = useRef<HTMLInputElement>();
+  const oldPasswordInput = useRef<HTMLInputElement>();
+  const newUsernameInput = useRef<HTMLInputElement>();
+
+  const passwordSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    const enteredOldPassword = oldPasswordInput.current.value;
-    const enteredNewPassword = newPasswordInput.current.value;
+    const enteredOldPassword = oldPasswordInput.current!.value;
+    const enteredNewPassword = newPasswordInput.current!.value;
 
     onChangePassword({
       oldPassword: enteredOldPassword,
@@ -20,7 +30,7 @@ function ProfileForm({ onChangePassword, onChangeUsername }) {
     oldPasswordInput.current.value = "";
   };
 
-  const usernameSubmitHandler = (e) => {
+  const usernameSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
 
     onChangeUsername(newUsernameInput.current.value);

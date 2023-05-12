@@ -1,5 +1,10 @@
 import MainNavigation from "./main-navigation";
-const Layout = ({ children }) => {
+import React, { ReactNode } from "react";
+
+type Props = {
+  children: ReactNode;
+};
+const Layout = ({ children }: Props) => {
   return (
     <>
       <MainNavigation />

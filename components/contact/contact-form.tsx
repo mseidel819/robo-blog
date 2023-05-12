@@ -1,9 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import styles from "./contact-form.module.css";
 import Notification from "../ui/notification";
 import { useSession } from "next-auth/react";
 
-const sendContactData = async (contactDetails) => {
+type ContactDetails = {
+  email: string;
+  name: string;
+  message: string;
+};
+
+const sendContactData = async (contactDetails: ContactDetails) => {
   const response = await fetch("/api/contact", {
     method: "POST",
     body: JSON.stringify(contactDetails),
@@ -23,8 +29,10 @@ const ContactForm = () => {
   const { data: userSession, status } = useSession();
 
   const [enteredMessage, setEnteredMessage] = useState("");
-  const [requestStatus, setRequestStatus] = useState();
-  const [requestError, setRequestError] = useState();
+  const [requestStatus, setRequestStatus] = useState<
+    "pending" | "error" | "success"
+  >();
+  const [requestError, setRequestError] = useState<string | undefined>();
 
   useEffect(() => {
     if (requestStatus === "success" || requestStatus === "error") {
@@ -37,15 +45,15 @@ const ContactForm = () => {
     }
   }, [requestStatus]);
 
-  const sendMessageHandler = async (e) => {
+  const sendMessageHandler = async (e: FormEvent) => {
     e.preventDefault();
 
     setRequestStatus("pending");
 
     try {
       await sendContactData({
-        email: userSession.user.email,
-        name: userSession.user.name,
+        email: userSession?.user?.email,
+        name: userSession?.user?.name,
         message: enteredMessage,
       });
       setRequestStatus("success");
@@ -93,33 +101,11 @@ const ContactForm = () => {
       </p>
       {userSession && (
         <form className={styles.form} onSubmit={sendMessageHandler}>
-          {/* <div className={styles.controls}>
-            <div className={styles.control}>
-              <label htmlFor="email">Your Email</label>
-              <input
-                type="email"
-                id="email"
-                required
-                value={enteredEmail}
-                onChange={(event) => setEnteredEmail(event.target.value)}
-              />
-            </div>
-            <div className={styles.control}>
-              <label htmlFor="name">Your Name</label>
-              <input
-                type="text"
-                id="name"
-                required
-                value={enteredName}
-                onChange={(event) => setEnteredName(event.target.value)}
-              />
-            </div>
-          </div> */}
           <div className={styles.control}>
             <label htmlFor="message">Your Message</label>
             <textarea
               id="message"
-              rows="5"
+              rows={5}
               required
               value={enteredMessage}
               onChange={(event) =>

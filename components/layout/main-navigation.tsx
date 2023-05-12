@@ -4,10 +4,12 @@ import styles from "./main-navigation.module.css";
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Hamburger from "../ui/hamburger/hamburger";
+
 const MainNavigation = () => {
   const { data: session, status } = useSession();
 
-  const [width, setWidth] = useState();
+  const [width, setWidth] = useState<number | undefined>();
+
   const resizeHandler = () => setWidth(window.innerWidth);
 
   useEffect(() => {

@@ -2,10 +2,11 @@ import styles from "./hamburger.module.css";
 import Link from "next/link";
 import { useState, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
+import React from "react";
 
 const Hamburger = () => {
   const [active, setActive] = useState(false);
-  const checkBoxStatus = useRef();
+  const checkBoxStatus = useRef<HTMLInputElement>();
   const { data: session, status } = useSession();
 
   const bar1 = `${styles.bars} ${styles.bar1}`;
@@ -15,7 +16,8 @@ const Hamburger = () => {
   const activeHandler = () => {
     setActive(!active);
 
-    if (active) checkBoxStatus.current.checked = false;
+    if (active && checkBoxStatus.current)
+      checkBoxStatus.current.checked = false;
   };
 
   const logoutHandler = () => {

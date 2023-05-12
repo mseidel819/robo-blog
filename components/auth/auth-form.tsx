@@ -1,10 +1,14 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import classes from "./auth-form.module.css";
 import { useRouter } from "next/router";
 import Notification from "../ui/notification";
 
-const createUser = async (email, password, username) => {
+const createUser = async (
+  email: string,
+  password: string,
+  username: string
+) => {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
     body: JSON.stringify({ email, password, username }),
@@ -22,12 +26,14 @@ const createUser = async (email, password, username) => {
 };
 
 function AuthForm() {
-  const emailInpufRef = useRef();
-  const passwordInputRef = useRef();
-  const usernameInpufRef = useRef();
+  const emailInpufRef = useRef<HTMLInputElement>();
+  const passwordInputRef = useRef<HTMLInputElement>();
+  const usernameInpufRef = useRef<HTMLInputElement>();
   const [isLogin, setIsLogin] = useState(true);
-  const [requestStatus, setRequestStatus] = useState();
-  const [requestError, setRequestError] = useState();
+  const [requestStatus, setRequestStatus] = useState<
+    "pending" | "error" | "success" | "login error" | "signin" | "signup"
+  >();
+  const [requestError, setRequestError] = useState<string | undefined>();
   //processing, success, error
   const router = useRouter();
 
@@ -50,7 +56,7 @@ function AuthForm() {
     setIsLogin((prevState) => !prevState);
   }
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
     setRequestStatus("pending");
 
