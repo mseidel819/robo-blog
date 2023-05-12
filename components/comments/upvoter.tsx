@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { changeScore } from "@/store/comments/comments.reducer";
 import { Comment } from "@/types";
 import { ObjectId } from "bson";
+import React from "react";
 
 type Props = {
   data: Comment;

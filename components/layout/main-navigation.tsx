@@ -4,6 +4,7 @@ import styles from "./main-navigation.module.css";
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Hamburger from "../ui/hamburger/hamburger";
+import React from "react";
 
 const MainNavigation = () => {
   const { data: session, status } = useSession();

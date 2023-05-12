@@ -3,6 +3,7 @@ import FeaturedPosts from "@/components/home-page/featured-posts";
 import { getFeaturedPosts } from "@/lib/posts-util";
 import Head from "next/head";
 import { PostData } from "@/types";
+import React from "react";
 
 type Props = {
   posts: PostData[];

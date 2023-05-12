@@ -1,6 +1,7 @@
 import styles from "./posts-grid.module.css";
 import PostItem from "./post-item";
 import { PostData } from "@/types";
+import React from "react";
 
 type Props = {
   posts: PostData[];

@@ -13,6 +13,7 @@ import {
   GetStaticProps,
   GetStaticPropsContext,
 } from "next/types";
+import React from "react";
 
 type Props = {
   post: PostData;

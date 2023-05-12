@@ -3,6 +3,7 @@ import { getSession } from "next-auth/react";
 // import { authOptions } from "./api/auth/[...nextauth]";
 // import { getServerSession } from "next-auth/next";
 import { GetServerSideProps } from "next";
+import React from "react";
 
 type UserProps = {
   name: string;

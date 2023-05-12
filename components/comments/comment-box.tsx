@@ -3,6 +3,7 @@ import Comment from "./comment";
 import styles from "./comment-box.module.css";
 import { useSelector } from "react-redux";
 import { selectComments } from "@/store/comments/comments.selector";
+import React from "react";
 
 type Props = {
   slug: string;

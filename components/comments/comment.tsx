@@ -11,6 +11,7 @@ import {
 import Upvoter from "./upvoter";
 import { Comment } from "@/types";
 import { ObjectId, ObjectIdExtended } from "bson";
+import React from "react";
 
 type Props = {
   data: Comment;

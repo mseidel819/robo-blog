@@ -3,6 +3,7 @@ import { signIn } from "next-auth/react";
 import classes from "./auth-form.module.css";
 import { useRouter } from "next/router";
 import Notification from "../ui/notification";
+import React from "react";
 
 const createUser = async (
   email: string,

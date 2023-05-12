@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "./post-item.module.css";
 import { useState, useEffect } from "react";
 import { PostData } from "@/types";
+import React from "react";
 
 type Props = {
   post: PostData;

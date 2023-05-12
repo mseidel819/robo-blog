@@ -6,6 +6,7 @@ import Loader from "../ui/loader/loader";
 import { useDispatch } from "react-redux";
 import { addToComments } from "@/store/comments/comments.reducer";
 import { Comment } from "@/types";
+import React from "react";
 
 type Props = {
   slug: string;

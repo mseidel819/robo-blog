@@ -1,5 +1,6 @@
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+
 import atomDark from "react-syntax-highlighter/dist/cjs/styles/prism/atom-dark";
 import js from "react-syntax-highlighter/dist/cjs/languages/prism/javascript";
 import arduino from "react-syntax-highlighter/dist/cjs/languages/prism/arduino";
@@ -8,6 +9,7 @@ import PostHeader from "./post-header";
 import styles from "./post-content.module.css";
 import Image from "next/image";
 import { PostData } from "@/types";
+import React from "react";
 
 SyntaxHighlighter.registerLanguage("js", js);
 SyntaxHighlighter.registerLanguage("arduino", arduino);

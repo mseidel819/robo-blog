@@ -3,6 +3,7 @@ import PostGrid from "../posts/posts-grid";
 import GlitchButton from "../ui/button";
 import Link from "next/link";
 import { PostData } from "@/types";
+import React from "react";
 
 type Props = {
   posts: PostData[];

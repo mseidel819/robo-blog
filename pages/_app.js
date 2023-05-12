@@ -4,9 +4,10 @@ import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { wrapper } from "../store/store";
 import { Provider } from "react-redux";
-import { AppProps } from "next/app";
+// import { AppProps } from "next/app";
+import React from "react";
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }) {
   const { store, props } = wrapper.useWrappedStore(pageProps);
   const { session, ...rest } = props;
   return (

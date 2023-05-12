@@ -2,6 +2,7 @@ import { useState, useEffect, FormEvent } from "react";
 import styles from "./contact-form.module.css";
 import Notification from "../ui/notification";
 import { useSession } from "next-auth/react";
+import React from "react";
 
 type ContactDetails = {
   email: string;
