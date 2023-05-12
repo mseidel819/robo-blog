@@ -70,7 +70,11 @@ const Upvoter = ({ data }) => {
       )}
       {session && session.user.email !== data.user.email && (
         <div className={styles.upvoter}>
-          <button className={styles.score_btn} onClick={upvoteHandler}>
+          <button
+            className={`${styles.score_btn} ${
+              data.upvoted.includes(userEmail) ? styles.btn_active : ""
+            }`}
+            onClick={upvoteHandler}>
             +
           </button>
           {!scoreLoading && <span>{getScore()}</span>}
@@ -80,7 +84,11 @@ const Upvoter = ({ data }) => {
             </span>
           )}
 
-          <button className={styles.score_btn} onClick={downvoteHandler}>
+          <button
+            className={`${styles.score_btn} ${
+              data.downvoted.includes(userEmail) ? styles.btn_active : ""
+            }`}
+            onClick={downvoteHandler}>
             -
           </button>
         </div>

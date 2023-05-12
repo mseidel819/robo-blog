@@ -21,3 +21,8 @@
 .score_btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
+
+.btn_active {
+  background-color: var(--color-primary-300) !important;
+  color: var(--color-grey-200);
+}

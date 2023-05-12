@@ -7,7 +7,6 @@ import { selectComments } from "@/store/comments/comments.selector";
 const CommentBox = ({ slug, loading }) => {
   const comments = useSelector(selectComments);
   let filteredComments = [];
-  console.log(comments);
   if (comments) {
     filteredComments = comments
       .filter((comment) => comment.articleId === slug)
