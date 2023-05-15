@@ -1,11 +1,23 @@
 import { connectToDb } from "@/lib/db";
-import { ObjectId } from "mongodb";
+import {
+  DeleteResult,
+  Document,
+  ModifyResult,
+  MongoClient,
+  ObjectId,
+  UpdateResult,
+} from "mongodb";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req, res) => {
-  const { id } = req.query;
+type routerQuery = {
+  id?: number;
+};
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { id } = req.query as routerQuery;
   const formattedId = new ObjectId(id);
 
-  let client;
+  let client: MongoClient;
   try {
     client = await connectToDb();
   } catch (err) {
@@ -14,7 +26,7 @@ const handler = async (req, res) => {
   }
 
   const db = client.db();
-  let result;
+  let result: UpdateResult<Document> | ModifyResult<Document>;
 
   if (req.method === "PATCH") {
     const { newContent } = req.body;

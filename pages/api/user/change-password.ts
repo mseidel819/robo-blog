@@ -1,9 +1,11 @@
-import { hashPassword, verifyPassword } from "@/lib/auth";
-import { connectToDb } from "@/lib/db";
+import { hashPassword, verifyPassword } from "../../../lib/auth";
+import { connectToDb } from "../../../lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import { NextApiRequest, NextApiResponse } from "next";
+import { ChangePasswordRequestBody } from "../types";
 
-const handler = async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "PATCH") {
     return;
   }
@@ -14,9 +16,8 @@ const handler = async (req, res) => {
       message: "not authenticated",
     });
   }
-  const userEmail = session.user.email;
-  const oldPassword = req.body.oldPassword;
-  const newPasword = req.body.newPassword;
+  const userEmail = session?.user?.email;
+  const { oldPassword, newPassword }: ChangePasswordRequestBody = req.body;
 
   const client = await connectToDb();
   const usersCollection = await client.db().collection("users");
@@ -28,7 +29,7 @@ const handler = async (req, res) => {
     return;
   }
 
-  const currentPassword = user.password;
+  const currentPassword: string = user.password;
 
   const passwordsAreEqual = await verifyPassword(oldPassword, currentPassword);
   if (!passwordsAreEqual) {
@@ -37,7 +38,7 @@ const handler = async (req, res) => {
     return;
   }
 
-  const hashedPassword = await hashPassword(newPasword);
+  const hashedPassword = await hashPassword(newPassword);
 
   const result = await usersCollection.updateOne(
     { email: userEmail },

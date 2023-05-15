@@ -1,12 +1,14 @@
 import { connectToDb } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import { ChangeUsernameRequestBody } from "../types";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "PATCH") {
     return;
   }
-  const { newUsername } = req.body;
+  const { newUsername }: ChangeUsernameRequestBody = req.body;
 
   const session = await getServerSession(req, res, authOptions);
   if (!session) {

@@ -9,6 +9,7 @@ export type PostData = {
 export type User = {
   username: string;
   email: string;
+  id?: string;
 };
 
 export type Comment = {
