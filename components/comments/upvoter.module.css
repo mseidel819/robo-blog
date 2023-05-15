@@ -15,7 +15,8 @@
 .score_btn {
   border: none;
   background-color: transparent;
-  width: 32px;
+  width: 23px;
+  padding: 0 6px;
   color: black;
 }
 .score_btn:hover {
