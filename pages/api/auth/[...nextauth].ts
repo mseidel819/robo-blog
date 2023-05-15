@@ -1,10 +1,17 @@
 import { verifyPassword } from "@/lib/auth";
 import { connectToDb } from "@/lib/db";
 import NextAuth from "next-auth/next";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // import CredentialsProvider from "next-auth/providers/credentials";
+import {
+  CredentialsConfig,
+  CredentialInput,
+} from "next-auth/providers/credentials";
+import { ObjectId } from "bson";
+import { User } from "@/types";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
@@ -38,8 +45,10 @@ export const authOptions = {
         return {
           email: user.email,
           name: user.username,
+          id: user._id.toString(),
         };
       },
+      credentials: undefined,
     }),
   ],
 };

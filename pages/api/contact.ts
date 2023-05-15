@@ -1,9 +1,14 @@
-import { MongoClient } from "mongodb";
 import { connectToDb } from "@/lib/db";
+import { NextApiRequest, NextApiResponse } from "next";
+import { ContactRequestBody } from "./types";
+import { MongoClient, ObjectId } from "mongodb";
 
-const handler = async (req, res) => {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   if (req.method === "POST") {
-    const { email, name, message } = req.body;
+    const { email, name, message }: ContactRequestBody = req.body;
 
     if (
       !email ||
@@ -19,9 +24,14 @@ const handler = async (req, res) => {
       return;
     }
 
-    const newMessage = { email, name, message };
+    const newMessage: {
+      email: string;
+      name: string;
+      message: string;
+      id?: ObjectId;
+    } = { email, name, message };
 
-    let client;
+    let client: MongoClient;
 
     try {
       client = await connectToDb();
