@@ -1,11 +1,12 @@
 import { connectToDb } from "@/lib/db";
-import { MongoClient, ObjectId } from "mongodb";
+import { Document, MongoClient, ObjectId, UpdateResult } from "mongodb";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { slug } = req.query;
 
   if (req.method === "GET") {
-    let client;
+    let client: MongoClient;
 
     try {
       client = await connectToDb();
@@ -37,7 +38,7 @@ const handler = async (req, res) => {
   if (req.method === "POST") {
     const newComment = req.body;
 
-    let client;
+    let client: MongoClient;
 
     const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.frabwah.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
     try {
@@ -69,7 +70,7 @@ const handler = async (req, res) => {
 
   if (req.method === "PATCH" && req.body.voteDirection) {
     const { id, userEmail, voteDirection } = req.body;
-    let client;
+    let client: MongoClient;
 
     const objectId = new ObjectId(id);
 
@@ -84,7 +85,7 @@ const handler = async (req, res) => {
     const db = client.db();
 
     try {
-      const commentCollection = await db.collection("comments");
+      const commentCollection = db.collection("comments");
 
       // const result = await commentCollection.updateOne(
       //   { _id: objectId },
@@ -93,7 +94,7 @@ const handler = async (req, res) => {
 
       const findUser = await commentCollection.findOne({ _id: objectId });
 
-      let result;
+      let result: UpdateResult<Document>;
 
       if (!userEmail) throw new Error("no user found");
 
@@ -157,7 +158,7 @@ const handler = async (req, res) => {
         );
       }
 
-      if (result.length === 0) {
+      if (!result) {
         res.status(404).json({ message: "comment not found" });
         return;
       }

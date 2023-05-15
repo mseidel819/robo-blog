@@ -1,7 +1,8 @@
 import { hashPassword } from "@/lib/auth";
 import { connectToDb } from "@/lib/db";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const data = req.body;
     const { email, password, username } = data;

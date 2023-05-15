@@ -3,13 +3,6 @@ import { connectToDb } from "@/lib/db";
 import NextAuth from "next-auth/next";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// import CredentialsProvider from "next-auth/providers/credentials";
-import {
-  CredentialsConfig,
-  CredentialInput,
-} from "next-auth/providers/credentials";
-import { ObjectId } from "bson";
-import { User } from "@/types";
 
 export const authOptions: NextAuthOptions = {
   session: {
