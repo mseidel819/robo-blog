@@ -17,7 +17,6 @@ To run Robo Blog locally on your machine, follow these steps:
 2. Install dependencies:
 
 ```bash
-Copy code
 cd robo-blog
 npm install
 ```
@@ -25,7 +24,6 @@ npm install
 3. Start the development server:
 
 ```bash
-Copy code
 npm start
 ```
 
